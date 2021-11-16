@@ -1,0 +1,1401 @@
+\documentclass{book}
+\usepackage[papersize={6.5in,9.5in},left=.6in,right=.6in,top=1in,bottom=1in]{geometry}%papersize={6.5in,9.5in}
+\usepackage{titlesec}
+\linespread{1.2}%(因子=1.5)*基本行间距
+
+\usepackage{tcolorbox}
+
+\usepackage{enumitem}
+\usepackage{verbatim}
+\setlist[enumerate]{label=\textnormal{(\roman*)}, itemindent=0em, topsep=0em, parsep=0.5ex, itemsep=0em}%全局列表设置%topsep=0em,parsep=0em,itemsep=0em
+\renewcommand{\footnotesize}{\normalsize}
+\usepackage{datetime}
+
+\usepackage{emptypage}%清除空白页页眉、页脚
+\usepackage{fancyhdr}%设置页眉和页脚
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}%章标题
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}%节标题
+\fancyhead[RE]{\large\emph\leftmark}
+\fancyhead[LO]{\large\emph\rightmark}
+\fancyhead[RO]{\large\thepage}
+\fancyhead[LE]{\large\thepage}
+%\fancyhead[RO]{}
+%\fancyhead[LE]{}
+\fancyfoot[C]{}
+\fancypagestyle{plain}{\fancyhf{}}
+\fancyfoot[L]{{\scriptsize\copyright~\textsc{Hsin-Miao Chao}. \today.}}
+\fancyfoot[L]{{\scriptsize\copyright~\textsc{Hsin}. \today.}}
+\renewcommand\headrulewidth{0pt}%清除页眉分割线
+
+\usepackage[breaklinks,colorlinks,linkcolor=black,citecolor=black,urlcolor=black,bookmarksnumbered=true,bookmarks=true,bookmarksopen=true]{hyperref}
+
+\usepackage{amssymb, amsmath, amsthm, mathrsfs}%数学符号,数学公式环境,数学证明环境
+\usepackage{amssymb}
+\usepackage[tikz]{mdframed}
+\newtheoremstyle{defstyle}% ⟨name⟩
+{0em}% ⟨Space above⟩
+{0pt}% ⟨Space below⟩
+{\upshape}% ⟨Body font⟩
+{}% ⟨Indent amount⟩
+{\bfseries}% ⟨Theorem head font⟩
+{.}% ⟨Punctuation after theorem head⟩
+{.5em}% ⟨Space after theorem head⟩
+{}% ⟨Theorem head spec (can be left empty, meaning ‘normal’)⟩
+\theoremstyle{defstyle}
+
+%\newtheorem{definition}{Definition}[section]
+\newmdtheoremenv[outerlinewidth = 1, roundcorner = 10pt, leftmargin = 40, rightmargin = 40, backgroundcolor = yellow!40, outerlinecolor = red!70!black, innertopmargin = .5em, skipabove = 1.em, splittopskip = \topskip]{definition}{Definition}[section]
+
+%\newtheorem{example}[definition]{Example}
+\newmdtheoremenv[outerlinewidth = 1, roundcorner = 10pt, leftmargin = 40, rightmargin = 40, backgroundcolor = brown!15, outerlinecolor = red!70!black, innertopmargin = .5em, skipabove = 1.em, splittopskip = \topskip ]{example}[definition]{Example}
+
+\newtheoremstyle{thmstyle}% ⟨name⟩
+{0.em}% ⟨Space above⟩
+{0pt}% ⟨Space below⟩
+{\itshape}% ⟨Body font⟩
+{}% ⟨Indent amount⟩
+{\bfseries}% ⟨Theorem head font⟩
+{.}% ⟨Punctuation after theorem head⟩
+{.5em}% ⟨Space after theorem head⟩
+{}% ⟨Theorem head spec (can be left empty, meaning ‘normal’)⟩
+\theoremstyle{thmstyle}
+
+%\newtheorem{proposition}[definition]{Proposition}
+%\newtheorem{theorem}[definition]{Theorem}
+%\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+
+\newmdtheoremenv[outerlinewidth = 1, roundcorner = 10pt, leftmargin = 40, rightmargin = 40, backgroundcolor = blue!10, outerlinecolor = red!70!black, innertopmargin = .5em, skipabove = 1.em, splittopskip = \topskip,]{proposition}[definition]{Proposition}
+
+\newmdtheoremenv[outerlinewidth = 1, roundcorner = 10pt, leftmargin = 40, rightmargin = 40, backgroundcolor = blue!10, outerlinecolor = red!70!black, innertopmargin = .5em, skipabove = 1.em, splittopskip = \topskip,]{theorem}[definition]{Theorem}
+
+\newmdtheoremenv[outerlinewidth = 1, roundcorner = 10pt, leftmargin = 40, rightmargin = 40, backgroundcolor = blue!10, outerlinecolor = red!70!black, innertopmargin = .5em, skipabove = 1.em, splittopskip = \topskip ]{lemma}[definition]{Lemma}
+
+%\usepackage{newtxmath}%newtxtext,
+\usepackage{bm}%公式粗体
+\DeclareMathOperator{\inte}{Int}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\PiecewiseConstant}{p.c.}
+\DeclareMathOperator{\Simple}{Simp}
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\image}{Im}
+\newcommand{\pcint}{\PiecewiseConstant\int}
+\newcommand{\simpint}{\Simple\int}
+%\newcommand{\simpint}{{\textrm{Simp}}\int}
+\newcommand{\JIM}{m_{*, (J)}}%Jordan inner measure
+\newcommand{\JOM}{m^{*, (J)}}%Jordan outer measure
+\begin{comment}
+\makeatletter%公式行间距调整
+\renewcommand\normalsize{%
+   \@setfontsize\normalsize\@xpt\@xiipt
+   \abovedisplayskip 3\p@ \@plus2\p@ \@minus2\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 3\p@ \@plus2\p@ \@minus2\p@
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+\makeatother
+\end{comment}
+\allowdisplaybreaks[4]%公式换页,强度从0-4.
+\newcommand{\pff}{\noindent\emph{Proof.}~~}
+
+\newcommand{\remark}{\vspace{.5em}\noindent\textbf{Remark.}~}
+\newcommand{\newa}{\vspace{1em}\indent}
+\newcommand{\titl}[1]{\noindent\textbf{#1}}
+\newcommand{\embf}[1]{\emph{\textbf{#1}}}
+
+
+%计数器
+
+\newcounter{Proposition}[section]
+\renewcommand{\theProposition}{\thesection.\arabic{Proposition}}
+\titleformat{\chapter}[display]{\bfseries\Large}{\filright\MakeUppercase{\chaptertitlename} \huge\arabic{chapter}}{2ex}{\filright\LARGE}
+\titleformat{\section}{\normalfont}{\filright\bfseries\Large\S\thesection}{8pt}{\Large\bfseries}
+%\usepackage{fontspec}
+
+\titleformat{\chapter}[display]{\bfseries\Large}{\filright\MakeUppercase{\chaptertitlename}\Huge\Roman{chapter}}{4ex}{\titlerule[1pt]\vspace{1pt}\titlerule\vspace{1pc}\filright\huge}[\vspace{2ex}\titlerule]
+
+%\titleformat{\section}[frame]{\normalfont}{\filright\bfseries\fbox\thesection\enspace}{8pt}{\Large\bfseries\hspace{2.5em}}
+
+%Revision标签
+%\pdfbookmark[2]{Revision \theExercise}{3.5.13}
+%\texorpdfstring{$\mathbf{R}$}{R}
+
+\usepackage{tikz}
+
+
+\begin{document}
+
+\setlength{\headheight}{14pt}
+\large
+\setlength\parindent{2em}
+
+\begin{titlepage}
+   {\indent\fontsize{30pt}{0pt}\textbf{An Introduction to Measure Theory}}
+
+   \vfill
+   {\indent\small{\textsc{Hsin-Miao Chao}}}\\%Xinmiao Chao}}\\
+%   {\indent\small{TKKC, Xiamen University}}\\
+   {\indent\small{E-mail: grammcyao@icloud.com}}\\
+%   {\indent\small{WeChat:rightsforthepeoples}}\\
+   {\indent\small{Update: \today}}
+\end{titlepage}
+
+\thispagestyle{empty}
+\pdfbookmark[1]{Bookmarktitle}{internal_label}\tableofcontents
+\thispagestyle{empty}
+\cleardoublepage
+\setcounter{page}{1}
+
+\chapter{Measure theory}
+\section{Prologue: The problem of measure}
+
+\subsection{Elementary measure}
+
+Before we discuss Jordan measure, we discuss the even simpler notion of \emph{elementary measure}, which allows one to measure a very simple class of sets, namely the \emph{elementary sets} (finite unions of boxes).
+
+\begin{definition}[Intervals, boxes, elementary sets]\label{def:intervals, boxes, elementary sets}
+    An \emph{interval} is a subset of $\mathbf{R}$ of the form $[a, b] := \{x \in \mathbf{R} : a \leq x \leq b\}$, $[a, b) := \{x \in \mathbf{R} : a \leq x < b\}$, $(a, b] := \{x \in \mathbf{R} : a < x \leq b\}$, or $(a, b) := \{x \in \mathbf{R} : a < x < b\}$, where $a \leq b$ are real numbers. We define the \emph{length} $|I|$ of an interval $I = [a, b], [a, b), (a, b], (a, b)$ to be $|I| := b - a$. A \emph{box} in $\mathbf{R}^d$ is a Cartesian product $B := \prod_{i = 1}^{d} I_i$ of $d$ intervals $I_1, \cdots, I_d$, thus for instance, an interval is a one-dimensional box. The \emph{volume} $|B|$ of such a box $B$ is defined as $|B| := \prod_{i = 1}^{d} |I_i|$. An \emph{elementary set} is any subset of $\mathbf{R}^d$ which is the union of a finite number of boxes.
+\end{definition}
+
+\begin{proposition}[Boolean closure]\label{thm:boolean closure}
+    If $E, F \subset \mathbf{R}^d$ are elementary sets, then the union $E \cup F$, the intersection $E \cap F$, and the set theoretic difference $E \setminus F := \{x \in E : x \notin F\}$, and the symmetric difference $E\triangle F := (E \setminus F) \cup (F \setminus E)$ are also elementary. If $x \in \mathbf{R}^d$, then the translate $E + x := \{y + x : y \in E\}$ is also an elementary set.
+\end{proposition}
+
+\pff Suppose that $E$ and $F$ can be represented as the finite union of $A_1, \cdots, A_m$ and the finite union of $B_1, \cdots, B_n$, respectively, where $m, n \leq d$.
+
+Then we have
+    \begin{align*}
+        E \cup F
+        = \Big(\bigcup_{i = 1}^{m} A_i\Big) \cup \Big(\bigcup_{j = 1}^{n} B_j\Big).
+    \end{align*}
+Thus $E \cup F$ is an elementary set for that it equals to the union of $m + n$ boxes.
+
+For the intersection $E \cap F$, we have
+    \begin{align*}
+        E \cap F
+        = \Big(\bigcup_{i = 1}^{m} A_i\Big) \cap \Big(\bigcup_{j = 1}^{n} B_j\Big)
+        = \bigcup_{(i, j) \in \{1, \cdots, m\} \times \{1, \cdots, n\}} (A_i \cap B_j).
+    \end{align*}
+Let $A_i := I_{i, 1} \times \cdots \times I_{i, d}$ and $B_j := J_{j, 1} \times \cdots \times J_{j, d}$. We have
+    \begin{align*}
+        A_i \cap B_j
+        &= (I_{i, 1} \times \cdots \times I_{i, d}) \cap (J_{j, 1} \times \cdots \times J_{j, d})\\
+        &= (I_{i, 1} \cap J_{j, 1}) \times \cdots \times (I_{i, d} \cap J_{j, d}).
+    \end{align*}
+Thus $A_i \cap B_j$ are boxes for all $(i, j) \in \{1, \cdots, m\} \times \{1, \cdots, n\}$. Therefore, $E \cap F$ is an elementary set for that it equals to the union of $m \times n$ boxes.
+
+For the difference $E \setminus F$, for any $1 \leq j \leq n$ we have
+    \begin{align*}
+        E \setminus B_j = \Big(\bigcup_{i = 1}^{m} A_i\Big) \setminus B_j
+        = \bigcup_{i = 1}^{m} (A_i \setminus B_j).
+    \end{align*}
+We want to show that if $A$ and $B$ are boxes, then $A \setminus B$ is elementary. For this, let $A := I_1 \times \cdots \times I_d$ and $B := J_1 \times \cdots \times J_d$. Then
+    \begin{align*}
+        A \setminus B &= A \cap B^c\\
+        &= A \cap (K_1 \times \cdots \times K_d)\\
+        &= (I_1 \cap K_1) \times \cdots \times (I_d \cap K_d),
+    \end{align*}
+where $K_n$ equals to the union of bounded or unbounded intervals, then $I_n \cap K_n$ equals to the union of bounded intervals. Hence $A \setminus B$ equals to the union of some Cartesian sets, so that elementary.
+
+Thus $E \setminus B_j$ is an elementary. Since
+    \begin{align*}
+        E \setminus F
+        = E \setminus \Big(\bigcup_{j = 1}^{n} B_j\Big)
+        = \bigcap_{j = 1}^{n} (E \setminus B_j),
+    \end{align*}
+by conclusion above, $E \setminus F$ is an elementary.
+
+The symmetric difference $E \triangle F$ is an elementary set is immediately comes from above conclusions.
+
+For the translation $E + x$, this is easy to see that
+    \begin{align*}
+        E + x = \bigcup_{i = 1}^{m} (A_i + x),
+    \end{align*}
+where $A_i + x$ are boxes for all $1 \leq i \leq m$.\qed
+
+\newa We now give each elementary set a measure.
+
+\begin{lemma}[Measure of an elementary set]\label{thm:measure of an elementary set}
+    Let $E \subset \mathbf{R}^d$ be an elementary set.
+    \begin{enumerate}
+        \item $E$ can be expressed as the finite union of disjoint boxes.
+        \item If $E$ is partitioned as the finite union $B_1 \cup \cdots \cup B_k$ of disjoint boxes, then the quantity $m(E) := |B_1| + \cdots + |B_k|$ is independent of the partition. In other words, given any partition $B_1' \cup \cdots \cup B_{k'}'$ of $E$, one has $|B_1| + \cdots + |B_k| = |B_1'| + \cdots + |B_{k'}'|$.
+    \end{enumerate}
+    We refer to $m(E)$ as the elementary measure of $E$.
+\end{lemma}
+
+\pff We first prove (i) in the one-dimensional case $d = 1$. Given any finite collection of intervals $I_1, \cdots , I_k$, one can place the $2k$ endpoints of these intervals in increasing order (discarding repetitions). Looking at the open intervals between these endpoints, together with the endpoints themselves (viewed as intervals of length zero), we see that there exists a finite collection of disjoint intervals $J_1, \cdots ,J_{k'}$ such that each of the $I_1, \cdots , I_k$ are a union of some subcollection of the $J_1, \cdots ,J_{k'}$. This already gives (i) when $d = 1$. To prove the higher dimensional case, we express $E$ as the union $B_1, \cdots , B_k$ of boxes $B_i = I_{i, 1} \times \cdots \times I_{i, d}$. For each $j = 1, \cdots ,d$, we use the one-dimensional argument to express $I_{1, j} , \cdots , I_{k, j}$ as the union of subcollections of a collection $J_{1,j} , \cdots , J_{k_j', j}$ of disjoint intervals. Taking Cartesian products, we can express the $B_1, \cdots , B_k$ as finite unions of boxes $J_{i_1, 1} \times \cdots \times J_{i_d, d}$, where $1 \leq  i_j \leq k_j'$ for all $1 \leq j \leq d$. Such boxes are all disjoint, and the claim follows.
+
+To prove (ii) we let $\mathcal{B}$ be the collection of $B_1, \cdots, B_k$ and $\mathcal{B}'$ be the collection of $B_1', \cdots, B_{k'}'$. Then we can define the collection
+    \begin{align*}
+        \mathcal{B}\#\mathcal{B}' := \{B_i \cap B_j' : B_i \in \mathcal{B} \text{ and } B_j' \in \mathcal{B}'\}.
+    \end{align*}
+Define $|\mathcal{B}| := \sum_{B_i \in \mathcal{B}}|B_i|$, and define $|\mathcal{B}'|$ and $|\mathcal{B}\#\mathcal{B}'|$ by similar process. Now we want to show that $|\mathcal{B}| = |\mathcal{B}\#\mathcal{B}'|$ and $|\mathcal{B}'| = |\mathcal{B}\#\mathcal{B}'|$, this implies that $|\mathcal{B}| = |\mathcal{B}'|$.
+
+Since
+    \begin{align*}
+        B_i
+        = B_i \cap E
+        = B_i \cap \Big(\bigcup_{j = 1}^{n} B_j'\Big)
+        = \bigcup_{j = 1}^{n} (B_i \cap B_j'),
+    \end{align*}
+so that
+    \begin{align*}
+        E = \bigcup_{i = 1}^{m}\bigcup_{j = 1}^{n}(B_i \cap B_j'),
+    \end{align*}
+where $B_i \cap B_j'$ are disjoint boxes for all $1 \leq i \leq m, 1 \leq j \leq n$. Then $B_i$ can be expressed as the finite union of disjoint boxes $B_i \cap B_j'$, and we have
+    \begin{align*}
+        |B_j| = \sum_{j = 1}^{n}|B_i \cap B_j'|.
+    \end{align*}
+Thus
+    \begin{align*}
+        m(E) = |B_1| + \cdots + |B_k|
+        = \sum_{i = 1}^{m}\sum_{j = 1}^{n}|B_i \cap B_j'|,
+    \end{align*}
+i.e., $|\mathcal{B}| = |\mathcal{B}\#\mathcal{B}'|$. A similar argument shows that $|\mathcal{B}'| = |\mathcal{B}\#\mathcal{B}'|$. Thus $|\mathcal{B}| = |\mathcal{B}'|$, as desired.\qed
+
+\newa From definitions, the elementary measure obeys following properties:
+
+\begin{proposition}[The properties of elementary measure]\label{thm:the properties of elementary measure}
+    \qquad
+
+    \begin{enumerate}
+        \item $m(\emptyset) = 0$.
+        \item For all boxes $B$, we have $m(B) = |B|$.
+        \item (Non-negativity) For every elementary set $E$, we have $m(E) \geq 0$.
+        \item For every $E$ and $F$ are disjoint elementary sets, we have $m(E \cup F) = m(E) + m(F)$.
+        \item (Finite additivity) Let $E_1, \cdots, E_k$ be a finite sequence of disjoint elementary sets, then $m(\bigcup_{i = 1}^{k}E_i) = \sum_{i = 1}^{k} m(E_i)$.
+        \item (Monotonicity) For every elementary sets $E \subset F$, we have $m(E) \leq m(F)$.
+        \item For arbitrary elementary sets $E$ and $F$, we have $m(E \cup F) \leq m(E) + m(F)$.
+        \item (Finite subadditivity) Let $E_1, \cdots, E_k$ be a finite sequence of arbitrary elementary sets, then $m(\bigcup_{i = 1}^{k}E_i) \leq \sum_{i = 1}^{k} m(E_i)$.
+        \item (Translation invariance) For all elementary set $E$ and $x \in \mathbf{R}^d$, we have $m(E + x) = m(E)$.
+    \end{enumerate}
+\end{proposition}
+
+\pff Proof omitted.\qed
+
+\newa These properties in fact define elementary measure up to normalisation:
+
+\begin{theorem}[Uniqueness of elementary measure]\label{thm:uniqueness of elementary measure}
+    Let $d \geq 1$. Let $m' : \mathcal{E}(\mathbf{R}^d) \to \mathbf{R}^+$ be a map from the collection $\mathcal{E}(\mathbf{R}^d)$ of elementary subsets of $\mathbf{R}^d$ to the non-negative reals that obeys the non-negativity, finite additivity, and translation invariance properties. Then there exists a constant $c \in \mathbf{R}^+$ such that $m'(E) = cm(E)$ for all elementary sets $E$. In particular, if we impose the additional normalisation $m'([0, 1)^d) = 1$, then $m' \equiv m$.
+\end{theorem}
+
+\pff We first prove the statement in the one-dimensional case $d = 1$. This will give an intuition about the proof.
+
+Let $m'$ be a map from $\mathcal{E}(\mathbf{R})$ to $\mathbf{R}^+$ which obeys non-negativity, finite additivity, and translation invariance. Set $c := m'([0, 1))$. Since $[0, 1) = \bigcup_{k = 1}^{n}[\frac{k - 1}{n}, \frac{k}{n})$ where $[\frac{k - 1}{n}, \frac{k}{n})$ are disjoint intervals for all $k \in [0, n]$, and we also have $[0, \frac{1}{n}) = [\frac{k - 1}{n}, \frac{k}{n}) - \frac{k - 1}{n}$, hence by finite additivity and translation invariance, we have
+    \begin{align*}
+        m'([0, 1))
+        &= m'\Big(\bigcup_{k = 1}^{n}\Big[\frac{k - 1}{n}, \frac{k}{n}\Big)\Big)\\
+        &= \sum_{k = 1}^{n}m'\Big(\Big[\frac{k - 1}{n}, \frac{k}{n}\Big)\Big)\\
+        &= n \times m'\Big(\Big[0, \frac{1}{n}\Big)\Big).
+    \end{align*}
+Thus for every $E := [0, \frac{1}{n}) \in \mathcal{E}(\mathbf{R})$, there is a $c = m'([0, 1))$ such that $m'(E) = m'([0, 1)) \times \frac{1}{n} = cm(E)$.
+
+Now we extend $[0, \frac{1}{n})$ to rational case $[0, \frac{p}{q})$, where $p, q \in \mathbf{Z}^+$. Because $[0, p) = \bigcup_{k = 1}^{q} [\frac{(k - 1)p}{q}, \frac{kp}{q})$ and $[0, \frac{p}{q}) = [\frac{(k - 1)p}{q}, \frac{kp}{q}) - \frac{(k - 1)p}{q}$, by the finite additivity and translation invariance, we have
+    \begin{align*}
+        m'([0, p))
+        &= m'\Big(\bigcup_{k = 1}^{q} \Big[\frac{(k - 1)p}{q}, \frac{kp}{q}\Big)\Big)\\
+        &= \sum_{k = 1}^{q} m'\Big(\Big[\frac{(k - 1)p}{q}, \frac{kp}{q}\Big)\Big)\\
+        &= q \times m'\Big(\Big[0, \frac{p}{q}\Big)\Big).
+    \end{align*}
+Thus $m'([0, \frac{p}{q})) = \frac{1}{q}m'([0, p))$. By finite additivity and translation invariance,
+    \begin{align*}
+        m'([0, p))
+        = m'\Big(\bigcup_{k = 1}^{p}[k - 1, k)\Big)
+        = \sum_{k = 1}^{p}m'([k - 1, k))
+        = p \times m'([0, 1)).
+    \end{align*}
+Thus for $E = [0, \frac{p}{q}) \in \mathcal{E}(\mathbf{R})$ we have $m'(E) = \frac{p}{q}m'([0, 1)) = cm(E)$.
+
+Furthermore, we extend to real interval $[0, x]$ where $x \in \mathbf{R}^+$. From non-negativity and finite additivity, we conclude the monotonicity property $m'(E) \leq m'(F)$ whenever $E \subset F$. Then for every $x \in \mathbf{R}^+$, there is a $r, s \in \mathbf{Q}^+$ where $0 < r < s$ such that $r \leq x \leq s$. ($\mathbf{Q}$ is dense in $\mathbf{R}$.) By monotonicity and conclusion above, we have
+    \begin{align*}
+        m'([0, r)) \leq m'([0, x)) \leq m'([0, s)),
+    \end{align*}
+this implies
+    \begin{align*}
+        cr \leq m'([0, x)) \leq cs.
+    \end{align*}
+Recall that we define reals as the limit of Cauchy sequence of rationals, then for $\varepsilon > 0$, we have
+    \begin{align*}
+        c(x - \varepsilon) \leq cr \leq m'([0, x)) \leq cs \leq c(x + \varepsilon).
+    \end{align*}
+Since $\varepsilon$ is arbitrary, we have $m'([0, x)) = cx = cm([0, x))$. This is easy to see that every $E \in \mathcal{E}(\mathbf{R})$ can be expressed as the disjoint union of real intervals, using finite additivity and translation invariance, we have $m'(E) = cm(E)$ for all elementary set $E$, as desired.
+
+Now we briefly show the higher dimensional case. Set $c := m'([0, 1)^d)$. Consider $d$-dimensional box $[0, 1)^d \in \mathcal{E}(\mathbf{R}^d)$, by Definition \ref{def:intervals, boxes, elementary sets}, it can be expressed as the Cartesian product of intervals $[0, 1)$. We dividing $[0, 1)$ into $n$ disjoint intervals, then $[0, 1)^d$ is divided into $n^d$ disjoint boxes (see Lemma \ref{thm:measure of an elementary set}). Hence by finite additivity and translation invariance,
+    \begin{align*}
+        m'([0, 1)^d) = n^d \times m'\Big(\Big[0, \frac{1}{n}\Big)^d\Big),
+    \end{align*}
+and we have $m'([0, \frac{1}{n})^d) = \frac{1}{n^d}m'([0, 1)^d) = cm([0, \frac{1}{n})^d)$.
+
+Similarly, we have
+    \begin{align*}
+        m'([0, p)^d) = q^d \times m'\Big(\Big[0, \frac{p}{q}\Big)^d\Big)
+    \end{align*}
+and
+    \begin{align*}
+        m'([0, p)^d) = p^d \times m'([0, 1)^d).
+    \end{align*}
+This implies that $m'([0, \frac{p}{q})^d) = (\frac{p}{q})^dm'([0, 1)^d) = cm([0, \frac{p}{q})^d)$.
+
+And for real box case, we have
+    \begin{align*}
+        c(x - \varepsilon)^d \leq cr^d \leq m'([0, x)^d) \leq cs^d \leq c(x + \varepsilon)^d,
+    \end{align*}
+this implies $m'([0, x)^d) = cx^d = cm([0, x)^d)$.
+
+Because every elementary set $E \in \mathcal{E}(\mathbf{R}^d)$ can be expressed as the disjoint union of $[0, x)^d$, we have $m'(E) = cm(E)$. In particular, if we normalize $m'([0, 1)^d) = 1$, we have $m' \equiv m$.\qed
+
+\begin{lemma}\label{thm:m(ExF)=m(E)m(F) for elementary sets}
+    Let $d_1, d_2 \geq 1$, and let $E_1 \subset \mathbf{R}^{d_1}, E_2 \subset \mathbf{R}^{d_2}$ be elementary sets. Then $E_1 \times E_2 \subset \mathbf{R}^{d_1 + d_2}$ is elementary, and $m^{d_1 + d_2}(E_1 \times E_2) = m^{d_1}(E_1) \times m^{d_2}(E_2)$.
+\end{lemma}
+
+\pff Let $E_1$ equals to the finite disjoint union of $A_1, \cdots, A_k$ and $E_2$ equals to the finite disjoint union of $B_1, \cdots, B_{k'}$. Then for $1 \leq i \leq k$, we have
+    \begin{align*}
+        A_i \times E_2
+        = A_i \times \bigcup_{j = 1}^{k'} B_j
+        = \bigcup_{j = 1}^{k'} (A_i \times B_j).
+    \end{align*}
+By Definition \ref{def:intervals, boxes, elementary sets}, we have $|A_i \times B_j| = |A_i| \times |B_j|$. Then by Proposition \ref{thm:the properties of elementary measure}(ii), we have
+    \begin{align*}
+        m^{d_1 + d_2}(A_i \times E_2)
+        &= \sum_{j = 1}^{k'}m^{d_1 + d_2}(A_i \times B_j)\\
+        &= \sum_{j = 1}^{k'}|A_i \times B_j|\\
+        &= \sum_{j = 1}^{k'} (|A_i| \times |B_j|)\\
+        &= |A_i|\sum_{j = 1}^{k'} |B_j|\\
+        &= m^{d_1}(A_i)\sum_{j = 1}^{k'} m^{d_2}(B_j)\\
+        &= m^{d_1}(A_i)m^{d_2}(E_2).
+    \end{align*}
+Thus
+    \begin{align*}
+        m^{d_1 + d_2}(E_1 \times E_2)
+        &= m^{d_1 + d_2}\Big(\bigcup_{i = 1}^{k}(A_i\times E_2)\Big)\\
+        &= \sum_{i = 1}^{k}m^{d_1}(A_i)m^{d_2}(E_2)\\
+        &= m^{d_2}(E_2) \sum_{i = 1}^{k}m^{d_1}(A_i)\\
+        &= m^{d_1}(E_1)m^{d_2}(E_2),
+    \end{align*}
+as desired.\qed
+
+\subsection{Jordan measure}
+
+The elementary sets are a very restrictive class of sets, far too small for most applications. For instance, a solid triangle or disk in the plane will not be elementary, or even a rotated box. On the other hand, as essentially observed long ago by Archimedes, such sets E can be approximated from within and without by elementary sets $A \subset E \subset B$, and the inscribing elementary set $A$ and the circumscribing elementary set $B$ can be used to give lower and upper bounds on the putative measure of $E$. As one makes the approximating sets $A,B$ increasingly fine, one can hope that these two bounds eventually match. This gives rise to the following definitions.
+
+\begin{definition}[Jordan measure]\label{def:jordan measure}
+    Let $E \subset \mathbf{R}^d$ be a bounded set.
+    \begin{itemize}
+        \item The \emph{Jordan inner measure} $\JIM(E)$ of $E$ is defined as
+            \begin{align*}
+                \JIM(E) := \sup_{A \subset E, A \text{ elementary}} m(A).
+            \end{align*}
+        \item The \emph{Jordan outer measure} $\JOM(E)$ of $E$ is defined as
+            \begin{align*}
+                \JOM(E) := \inf_{B \supset E, B \text{ elementary}} m(B).
+            \end{align*}
+        \item If $\JIM(E) = \JOM(E)$, then we say that $E$ is \emph{Jordan measurable}, and call $m(E) := \JIM(E) = \JOM(E)$ then \emph{Jordan measure} of $E$. As before, we write $m(E)$ as $m^d(E)$ when we wish to emphasise the dimension $d$.
+    \end{itemize}
+\end{definition}
+
+\newa Jordan measurable sets are those sets which are ``almost elementary'' with respect to Jordan outer measure. More precisely, we have
+
+\begin{proposition}[Characterisation of Jordan measurability]\label{thm:Characterisation of Jordan measurability}
+    Let $E \subset \mathbf{R}^d$ be bounded. Then following are equivalent:
+    \begin{enumerate}
+        \item $E$ is Jordan measurable.
+        \item For every $\varepsilon > 0$, there exist elementary sets $A \subset E \subset B$ such that $m(B \setminus A) \leq \varepsilon$.
+        \item For every $\varepsilon > 0$, there exists an elementary set $A$ such that $\JOM(A \triangle E) \leq \varepsilon$.
+    \end{enumerate}
+\end{proposition}
+
+\pff (i) $\Rightarrow$ (ii). Since $E$ is Jordan measurable, by Definition \ref{def:jordan measure}, there is elementary sets $A \subset E \subset B$ such that $m(E) \leq m(A) + \varepsilon/2$ and $m(E) \geq m(B) - \varepsilon/2$. Then $m(B \setminus A) = m(B) - m(A) \leq \varepsilon$, as desired.
+
+(ii) $\Rightarrow$ (iii). There exist elementary sets $A \subset E \subset B$ such that $E \setminus A \subset B \setminus A$. Then by Definition \ref{def:jordan measure}, we have
+    \begin{align*}
+        \JOM(A \triangle E)
+        = \JOM(E \setminus A)
+        = \inf_{C \supset E \setminus A} m(B \setminus A)
+        \leq m(B \setminus A)
+        \leq \varepsilon.
+    \end{align*}
+
+\begin{comment}
+(iii) $\Rightarrow$ (i). Let $\varepsilon > 0$. Let $A$ and $B$ be elementary sets such that $A \subset E \subset B$. Then by Definition \ref{def:jordan measure}
+    \begin{align*}
+        \JOM(E) - \JIM(E)
+        = \inf_{B \supset E}m(B) - \sup_{A \subset E}m(A)
+        \leq \inf_{B \supset E}m(B)
+    \end{align*}
+Since there is an elementary set $A$ such that $\JOM(A \triangle E) \leq \varepsilon$, we have
+    \begin{align*}
+        \JOM(E) - \JIM(E)
+        \leq \inf_{B \setminus A \supset E \setminus A} m(B \setminus A) 
+        \leq \varepsilon.
+    \end{align*}
+Because $\varepsilon$ is arbitrary, we conclude that $\JOM(E) = \JIM(E)$, so that $E$ is Jordan measurable.\qed
+\end{comment}
+
+(iii) $\Rightarrow$ (i). From definition, we obviously have $\JIM(E) \leq \JOM(E)$. This is sufficient to show that $\JOM(E) \leq \JIM(E)$ so that $E$ is Jordan measurable with $m(E) = \JIM(E) = \JOM(E)$.
+
+By hypothesis, for every $\varepsilon > 0$, there exists an elementary set $A$ such that $\JOM(A \triangle E) \leq \varepsilon$. Since
+    \begin{align*}
+        \JOM(A \triangle E)
+        &= \JOM((A \setminus E) \cup (E \setminus A))\\
+        &= \inf_{U \cup V \supset A \triangle E : U \supset A \setminus E, V \supset E \setminus A}m(U \cup V)\\
+        &\geq \inf_{V \supset E \setminus A}m(V)\\
+        &= \JOM(E \setminus A),
+    \end{align*}
+we have $\JOM(E \setminus A) \leq \varepsilon$ where $E \setminus A \subset E$.
+
+Since $A \cap E \subset E$, by definition, we have
+    \begin{align*}
+        \JIM(E) + \varepsilon
+        \geq \JIM(A \cap E) + \JOM(E \setminus A).
+    \end{align*}
+
+Now we want to show that $\JIM(A \cap E) = \JOM(A \cap E)$, i.e., $A \cap E$ is Jordan measurable. From $m(A \triangle E) \leq \varepsilon$, there exists an elementary set $S \supset A \triangle E$ such that $m(S) \leq \varepsilon$ (Why this is true? Use the Jordan outer measure of $A \triangle E$). Since we have $A \setminus S \subset A \cap E \subset A \cup S$, then
+    \begin{align*}
+        \JOM(A \cap E) - \JIM(A \cap E)
+        &\leq m(A \cup S) - m(A \setminus S)\\
+        &\leq m(A) + m(S) - m(A) + m(S)\\
+        &\leq 2\varepsilon,
+    \end{align*}
+for arbitrary $\varepsilon$. Thus we have $\JIM(A \cap E) = \JOM(A \cap E)$. Together our conclusions, we have
+    \begin{align*}
+        \JIM(E) + \varepsilon
+        \geq \JOM(A \cap E) + \JOM(E \setminus A).
+    \end{align*}
+
+Then we show that $\JOM(A \cap E) + \JOM(E \setminus A) \geq \JOM(E)$. We can see that $A \cap E$ and $E \setminus A$ are disjoint, then for every elementary set $D$ containing $E$ can be divided into the union of elementary sets $D_1$ and $D_2$ where $D_1 \supset A \cap E$ and $D_2 \supset E \setminus A$. Notice that $D_1$ and $D_2$ are not necessary to be disjoint. Thus
+    \begin{align*}
+        \JOM(E)
+        &= \inf_{D \supset E} m(D)\\
+        &\leq \inf_{D_1 \cup D_2 \supset E}(m(D_1) + m(D_2))\\
+        &= \inf_{D_1 \supset A \cap E}m(D_1) + \inf_{D_2 \supset E \setminus A}m(D_2)\\
+        &= \JOM(A \cap E) + \JOM(E \setminus A).
+    \end{align*}
+Therefore, we have $\JIM(E) + \varepsilon \geq \JOM(E)$. Because $\varepsilon$ is arbitrary, we have $\JIM(E) = \JOM(E)$, as desired. This shows that $E$ is Jordan measurable and we complete the proof.\qed
+
+\begin{remark}
+    As one corollary of this proposition, we see that every elementary set $E$ is Jordan measurable, and that Jordan measure and elementary measure coincide for such sets; this justifies the use of $m(E)$ to denote both. In particular, we still have $m(\emptyset) = 0$.
+\end{remark}
+
+Jordan measurability inherits many of properties of elementary measure:
+
+\begin{proposition}[The properties of Jordan measure]\label{thm:the properties of jordan measure}
+    Let $E, F \subset \mathbf{R}^d$ be Jordan measurable sets.
+    \begin{enumerate}
+        \item (Boolean closure) $E \cup F$, $E \cap F$, $E \setminus F$, and $E \triangle F$ are Jordan measurable.
+        \item (Non-negativity) $m(E) \geq 0$.
+        \item (Finite additivity) If $E, F$ are disjoint, then $m(E \cup F) = m(E) + m(F)$.
+        \item (Monotonicity) If $E \subset F$, then $m(E) \leq m(F)$.
+        \item (Finite subadditivity) $m(E \cup F) \leq m(E) + m(F)$.
+        \item (Translation invariance) For any $x \in \mathbf{R}^d$, $E + x$ is Jordan measurable, and $m(E + x) = m(E)$.
+    \end{enumerate}
+\end{proposition}
+
+\pff (i) To show the union $E \cup F$ is Jordan measurable. Since $E$ and $F$ are Jordan measurable, by Proposition \ref{thm:Characterisation of Jordan measurability}(ii), for every $\varepsilon > 0$ there are elementary sets $A \subset E \subset B$ and $C \subset F \subset D$ such that $m(B \setminus A) \leq \varepsilon/4$ and $m(D \setminus C) \leq \varepsilon/4$. Since $A \cup C \subset E \cup F \subset B \cup D$, and
+    \begin{align*}
+        (B \cup D) \setminus (A \cup C)
+        &= ((B \cup D) \setminus A) \cap ((B \cup D) \setminus C)\\
+        &= ((B \setminus A) \cup (D \setminus A)) \cap ((B \setminus C) \cup (D \setminus C))\\
+        &= ((B \setminus A) \cap (B \setminus C))
+        \cup ((D \setminus A) \cap (D \setminus C))\\
+        &\qquad\cup ((B \setminus A) \cap (D \setminus C))
+        \cup ((D \setminus A) \cap (B \setminus C))\\
+        &\subset (B \setminus A) \cup (D \setminus C) \cup (B \setminus A) \cup (D \setminus C),
+    \end{align*}
+by monotonicity and finite subadditivity, there exist $A \cup C \subset E \cup F \subset B \cup D$ such that
+    \begin{align*}
+        m((B \cup D) \setminus (A \cup C))
+        \leq 2m(B \setminus A) + 2m(D \setminus C) \leq \varepsilon.
+    \end{align*}
+Thus by Proposition \ref{thm:Characterisation of Jordan measurability}(ii), $E \cup F$ is Jordan measurable.
+
+To show the intersection $E \cap F$ is Jordan measurable. From Proposition \ref{thm:Characterisation of Jordan measurability}(ii), for every $\varepsilon > 0$ there is elementary sets $A \subset E \subset B$ and $C \subset F \subset D$ such that $m(B \setminus A) \leq \varepsilon/2$ and $m(D \setminus C) \leq \varepsilon/2$. Since $A \cap C \subset E \cap F \subset B \cap D$, and
+    \begin{align*}
+        (B \cap D) \setminus (A \cap C)
+        &= ((B \cap D)\setminus A) \cup ((B \cap D) \setminus C)\\
+        &= ((B \setminus A) \cap (D \setminus A)) \cup ((B \setminus C) \cap (D \setminus C))\\
+        &\subset (B \setminus A) \cup (D \setminus C),
+    \end{align*}
+by monotonicity and finite subadditivity, there exist $A \cap C \subset E \cap F \subset B \cap D$ such that
+    \begin{align*}
+        m((B \cup D) \setminus (A \cup C))
+        \leq m(B \setminus A) + m(D \setminus C) \leq \varepsilon.
+    \end{align*}
+Thus by Proposition \ref{thm:Characterisation of Jordan measurability}(ii), $E \cap F$ is Jordan measurable.
+
+To show the difference $E \setminus F$. From Proposition \ref{thm:Characterisation of Jordan measurability}(ii), for every $\varepsilon > 0$ there is elementary sets $A \subset E \subset B$ and $C \subset F \subset D$ such that $m(B \setminus A) \leq \varepsilon$ and $m(D \setminus C) \leq \varepsilon$. Then $A \setminus C \subset E \setminus F \subset B \setminus D$. Since
+    \begin{align*}
+        (B \setminus D) \setminus (A \setminus C)
+        = (B \setminus A) \setminus (D \setminus C)
+        \subset B \setminus A,
+    \end{align*}
+by monotonicity, there exist $A \setminus C \subset E \setminus F \subset B \setminus D$ such that
+\begin{align*}
+    m((B \setminus D) \setminus (A \setminus C))
+    \leq m(B \setminus A) \leq \varepsilon.
+\end{align*}
+Thus by Proposition \ref{thm:Characterisation of Jordan measurability}(ii), $E \setminus F$ is Jordan measurable.
+
+The symmetric difference $E \triangle F$ is Jordan measurable is immediately comes from above.
+
+(ii) Since for every elementary set $A$ we have $m(A) \geq 0$, by Definition \ref{def:jordan measure}, $\JIM(E) = \sup_{A \subset E} m(A) \geq 0$. Thus for every Jordan measurable set $E$, we have $m(E) \geq 0$.
+
+\begin{comment}
+(iii) Since $E \cup F$ is Jordan measurable, by Definition \ref{def:jordan measure}, we have $m(E \cup F) = \JIM(E \cup F)$, and
+    \begin{align*}
+        \JIM(E \cup F) = \sup_{A \cup B \subset E \cup F : A, B \text{ elementary}}m(A \cup B).
+    \end{align*}
+Since for arbitrary $A, B$, we have $m(A \cup B) \leq m(A) + m(B)$, this means that $m(A) + m(B)$ is a supremum of $m(A \cup B)$ when $A$ and $B$ are disjoint. Thus when $A$ and $B$ are disjoint, we have
+    \begin{align*}
+        \JIM(E \cup F) &= \sup_{A \cup B \subset E \cup F}m(A \cup B)\\
+        &= \sup_{A \subset E, B \subset F}m(A \cup B)\\
+        &= \sup_{A \subset E}m(A) + \sup_{B \subset F}m(B)\\
+        &= \JIM(E) + \JIM(F).
+    \end{align*}
+The third equality is hold for that $E$ and $F$ are disjoint. Thus $m(E \cup F) = m(E) + m(F)$ for disjoint sets $E$ and $F$.
+\end{comment}
+
+Since $E$ and $F$ are Jordan measurable, for every $\varepsilon > 0$, there exist elementary sets $A \subset E$ and $B \subset F$ such that $m(E) \leq m(A) + \varepsilon/2$ and $m(F) \leq m(B) + \varepsilon/2$. By finite additivity of elementary measure, we have 
+    \begin{align*}
+        m(E \cup F)
+        &= \JIM(E \cup F)\\
+        &= \sup_{A \cup B \subset E \cup F} m(A \cup B)\\
+        &= \sup_{A \cup B \subset E \cup F} m(A) + m(B)\\
+        &\geq m(E) + m(F) - \varepsilon.
+    \end{align*}
+
+For the other hand, for every $\varepsilon > 0$, there exist elementary sets $E \subset C$ and $F \subset D$ such that $m(E) \geq m(C) - \varepsilon/2$ and $m(F) \geq m(D) - \varepsilon/2$. Then
+    \begin{align*}
+        m(E \cup F)
+        &= \JOM(E \cup F)\\
+        &= \inf_{E \cup F \subset C \cup D}m(C \cup D)\\
+        &\leq \inf_{E \cup F \subset C \cup D}m(C) + m(D)\\
+        &\leq m(E) + m(F) + \varepsilon.
+    \end{align*}
+
+Thus we conclude that for arbitrary $\varepsilon > 0$ we have
+    \begin{align*}
+        m(E) + m(F) - \varepsilon
+        \leq m(E \cup F)
+        \leq m(E) + m(F) + \varepsilon.
+    \end{align*}
+This means that $m(E \cup F) = m(E) + m(F)$, as desired.
+
+(iv) This immediately comes from non-negativity and finite additivity of Jordan measure.
+
+(v) Finite subadditivity immediately comes from monotonicity and finite additivity.
+
+(vi) By Proposition \ref{thm:Characterisation of Jordan measurability}(ii), for every $\varepsilon > 0$, there exist elementary sets $A \subset E \subset B$ such that $m(B \setminus A) \leq \varepsilon$. Then by translation invariance of elementary measure, for $x \in \mathbf{R}^d$, there exists elementary sets $A + x \subset E + x \subset B + x$ such that
+    \begin{align*}
+        m((B + x) \setminus (A + x)) = m(B \setminus A + x) = m(B \setminus A) \leq \varepsilon.
+    \end{align*}
+Thus $E + x$ is Jordan measurable.\qed
+
+
+\newa Now we give some examples of Jordan measurable sets:
+
+\begin{example}[Regions under graphs are Jordan measurable]\label{exe:regions under graphs are jordan measurable}
+    Let $B$ be a closed box in $\mathbf{R}^d$, and let $f : B \to \mathbf{R}$ be a continuous function.
+    \begin{enumerate}[label=(\arabic*)]
+        \item Show that the graph $\{(x, f(x)) : x \in B\} \subset \mathbf{R}^{d + 1}$ is Jordan measurable in $\mathbf{R}^{d + 1}$ with Jordan measure zero.
+        \item Show that the set $\{(x, t) : x \in B; 0 \leq t \leq f(x)\} \subset \mathbf{R}^{d + 1}$ is Jordan measurable.
+    \end{enumerate}
+\end{example}
+
+\pff (1) Denote the graph of $f$ as $\text{graph}(f)$. Since $B$ is closed and bounded (see Definition \ref{def:intervals, boxes, elementary sets}), by Heine-Borel theorem, $B$ is compact.
+
+\begin{comment}
+Define $n$ as following:
+    \begin{align*}
+        N := \left\lfloor \frac{\max(B) - \min(B)}{\delta}\right\rfloor + 1
+    \end{align*}
+for $\delta > 0$. Let $x_1 = \min(B) + \delta$ and define $x_n := x_{n - 1} + 2\delta$, recursively, if $x_n \notin B$, define $x_n := \max(B)$.
+\end{comment}
+
+For the first assertion, since $f$ is defined on a compact metric space, continuity of $f$ is equivalent to uniform continuity. Then by the definition of uniform continuity, for every $\varepsilon > 0$, there exists a $\delta > 0$ such that $|f(x) - f(x')| < \varepsilon$ whenever $x, x' \in B$ are such that $|x - x'| < \delta$. This means that every element $x \in B$ lies in some open ball $B_n := \{x \in B : |x_n - x| < \delta\}$, and we have $B = \bigcup_{n = 1}^{\infty}B_n$. Since $B$ is compact, there exists an $N$ such that $B = \bigcup_{n = 1}^{N}B_n$.
+
+Then for every $\varepsilon > 0$, there exist a $\delta > 0$ and $N > 0$ such that $\emptyset \subset \text{graph}(f) \subset G_n$, where
+    \begin{align*}
+        G_n := \bigcup_{n = 1}^{N}B_n \times (f(x_n) - \varepsilon, f(x_n) + \varepsilon),
+    \end{align*}
+such that
+    \begin{align*}
+        m(G_n \setminus \emptyset)
+        = m(G_n)
+        \leq 2\varepsilon m(B).
+    \end{align*}
+Thus by Proposition \ref{thm:Characterisation of Jordan measurability}(ii), $\text{graph}(f)$ is Jordan measurable. Since $\varepsilon$ is arbitrary, by non-negativity and monotonicity, we have $m(\text{graph}(f)) \leq m(G_n) = 0.$ Thus $m(\text{graph}(f)) = 0$, as desired.
+
+(2) Denote the set as $S$. Since $f$ is uniformly continuous, for every $\varepsilon > 0$, there exists a $\delta > 0$ such that
+    \begin{align*}
+        \bigcup_{n = 1}^{N}B_n \times [0, f(x_n) - \varepsilon]
+        \subset S
+        \subset \bigcup_{n = 1}^{N}B_n \times [0, f(x_n) + \varepsilon]
+    \end{align*}
+such that
+    \begin{align*}
+        &m\Big(\bigcup_{n = 1}^{N}B_n \times [0, f(x_n) + \varepsilon]
+            \setminus \bigcup_{n = 1}^{N}B_n \times [0, f(x_n) - \varepsilon]\Big)\\
+        \leq\ & m\Big(\bigcup_{n = 1}^{N}B_n \times \bigcup_{n = 1}^{N}[0, f(x_n) + \varepsilon]\Big)
+            - m\Big(\bigcup_{n = 1}^{N}B_n \times \bigcup_{n = 1}^{N}[0, f(x_n) - \varepsilon]\Big)\\
+        \leq\ & m(B)\sum_{n = 1}^{N}(f(x_n) + \varepsilon) - m(B)\sum_{n = 1}^{N}(f(x_n) - \varepsilon)\\
+        =\ & 2\varepsilon m(B).
+    \end{align*}
+Because $\varepsilon$ is arbitrary, $S$ is Jordan measurable.\qed
+
+\begin{example}
+    Let $A, B, C$ be three points in $\mathbf{R}^2$.
+    \begin{enumerate}[label = (\arabic*)]
+        \item Show that the solid triangle with vertices $A, B, C$ is Jordan measurable.
+        \item Show that the Jordan measure of the solid triangle is equal to $\frac{1}{2}|(B - A) \land (C - A)|$, where $|(a, b) \land (c, d)| := |ad - bc|$.
+    \end{enumerate}
+\end{example}
+
+\pff (1) Let $A = (x_1, y_1), B = (x_2, y_2), C = (x_3, y_3)$. Suppose that $x_1 < x_2 < x_3$ and $y_1 < y_3$. We first consider that the edge $AB$ is horizontal to $x$-axis, i.e., $A = (x_1, y_1), B = (x_2, y_1)$. Define the edges $AB$, $AC$, and $BC$ as the lines pass through the points and restricting the domain on the corresponding intervals.
+The solid triangle is the area under the graph as following:
+    \begin{align*}
+        \triangle ABC := \left\{(x, t) : x \in [x_1, x_3]; AB \leq t \leq AC, BC \leq t \leq AC \right\}.
+    \end{align*}
+Since
+    \begin{align*}
+        U_1 := \{(x, t) : x \in [x_1, x_2]; 0 \leq t \leq AC\},\\
+        U_2 := \{(x, t) : x \in [x_1, x_2]; 0 \leq t < AB\},\\
+        U_3 := \{(x, t) : x \in [x_2, x_3]; 0 \leq t \leq AC\},\\
+        U_4 := \{(x, t) : x \in [x_2, x_3]; 0 \leq t < BC\},
+    \end{align*}
+are Jordan measurable from Exercise \ref{exe:regions under graphs are jordan measurable}(2), we have
+    \begin{align*}
+        \triangle ABC = (U_1 \setminus U_2) \cup (U_3 \setminus U_4)
+    \end{align*}
+is Jordan measurable by Proposition \ref{thm:the properties of jordan measure}.
+
+Without loss of generality, let $AB : [x_1, y_1] \to \mathbf{R}$, $AC : [x_2, y_2] \to \mathbf{R}$, $BC : [x_3, y_3] \to \mathbf{R}$ be the lines segments pass through the corresponding vertices. Define
+    \begin{align*}
+        V_1 &:= \{(x, t) : x \in [x_1, y_1] \cap [x_2, y_2]; t \in [AC, AB] \cup [AB, AC]\},\\
+        V_2 &:= \{(x, t) : x \in [x_2, y_2] \cap [x_3, y_3]; t \in [AC, BC] \cup [BC, AC]\},\\
+        V_3 &:= \{(x, t) : x \in [x_1, y_1] \cap [x_3, y_3]; t \in [AB, BC] \cup [BC, AC]\},
+    \end{align*}
+where $V_1, V_2, V_3$ are Jordan measurable (use Example \ref{exe:regions under graphs are jordan measurable}). Thus 
+    \begin{align*}
+        \triangle ABC = V_1 \cup V_2 \cup V_3
+    \end{align*}
+is Jordan measurable from Proposition \ref{thm:the properties of jordan measure}.
+
+(2) Let $A = (x_1, y_1)$, $B = (x_2, y_2)$, $C = (x_3, y_3)$. Let $a = x_2 - x_1$, $b = y_2 - y_1$, $c = x_3 - x_1$, $d = y_3 - y_1$. Then by translation invariance, we have $A = (0, 0)$, $B = (a, b)$, $C = (c, d)$, it would not change the areas. We have shown that the triangle is Jordan measurable, denote the square $ADEF$ as $S$, then we can see that $S = W_1 \cup W_2 \cup W_3 \cup T$ which is Jordan measurable. Since the edges have zero measure, we can just ignore them and $T = S \setminus (W_1 \cup W_2 \cup W_3)$.
+
+\vspace{-.5em}
+\begin{center}
+    \begin{tikzpicture}
+        \draw (0, 0) -- (4, 0);
+        \draw (0, 0) -- (0, 4);
+        \draw (4, 0) -- (4, 4);
+        \draw (0, 4) -- (4, 4);
+        \draw (0, 0) -- (2.5, 4);
+        \draw (2.5, 4) -- (4, 2.5);
+        \draw (0, 0) -- (4, 2.5);
+        \draw [dashed] (2.5, 0) -- (2.5 ,4);
+        \draw [dashed] (0, 2.5) -- (4, 2.5);
+        \node (A) at (0, 0) [below left] {$A$};
+        \node (B) at (4, 2.5) [right] {$B$};
+        \node (C) at (2.5, 4) [above] {$C$};
+        \node (D) at (0, 4) [above left] {$D$};
+        \node (E) at (4, 4) [above right] {$E$};
+        \node (F) at (4, 0) [below right] {$F$};
+        \node (W1) at (1, 3)  {$W_1$};
+        \node (W2) at (3.5, 3.5)  {$W_2$};
+        \node (W3) at (3, 1) [below]  {$W_3$};
+        \node (T) at (2.5, 2.5) {$T$};
+    \end{tikzpicture}
+\end{center}
+\vspace{-.5em}
+
+This is easy to see that $m(S) = ad$, $m(W_1) = \frac{1}{2}cd$, $m(W_2) = \frac{1}{2}(a - c)(d - b)$, $m(W_3) = \frac{1}{2}ab$. Since $m(W_1 \cap W_2 \cap W_3) = 0$, we have
+    \begin{align*}
+        m(W_1 \cup W_2 \cup W_3)
+        &= m(W_1) + m(W_2) + m(W_3) - m(W_1 \cap W_2 \cap W_3)\\
+        &= \frac{1}{2}(cd + (a - c)(d - b) + ab)\\
+        &= \frac{1}{2}(ad + cb).
+    \end{align*}
+Thus
+    \begin{align*}
+        m(T) &= m(S \setminus (W_1 \cup W_2 \cup W_3))\\
+        &= ad - \frac{1}{2}(ad + cb)\\
+        &= \frac{1}{2}(ad - cb)\\
+        &= \frac{1}{2}|(B - A) \wedge (C - A)|.
+    \end{align*}
+Here, notice that $m(T \cap (W_1 \cup W_2 \cup W_3)) = 0$.\qed
+
+
+\begin{example}
+    Show that every compact convex polytope\footnote{A \emph{closed convex polytope} is a subset of $\mathbf{R}^d$ formed by intersecting together finitely many closed half-spaces of the form $\{x \in \mathbf{R}^d : x \cdot v \leq c\}$, where $v \in \mathbf{R}^d, c \in \mathbf{R}$, and $\cdot$ denotes the usual dot product on $\mathbf{R}^d$. A \emph{compact convex polytope} is a closed convex polytope which is also bounded.} in $\mathbf{R}^d$ is Jordan measurable.
+\end{example}
+
+\begin{example}\label{exe:compact convex polytope is jordan measurable}
+    \quad
+    \begin{enumerate}[label = (\arabic*)]
+        \item Show that all open and closed Euclidean balls $B(x, r) := \{y \in \mathbf{R}^d : |y - x| < r\}$, $\overline{B(x, r)} := \{y \in \mathbf{R}^d : |y - x| \leq r\}$ in $\mathbf{R}^d$ are Jordan measurable, with Jordan measure $c_dr^d$ for some constant $c_d > 0$ depending only on $d$
+        \item Establish the crude bounds
+            \begin{align*}
+                \left(\frac{2}{\sqrt{d}}\right)^d \leq c_d \leq 2^d.
+            \end{align*}
+    \end{enumerate}
+(An exact formula for $c_d$ is $c_d = \frac{1}{d}\omega_d$, where $\omega_d := \frac{2\pi^{d/2}}{\Gamma(d/2)}$ is volume of the unit sphere $S^{d - 1} \subset \mathbf{R}^d$ and $\Gamma$ is the \emph{Gamma function}, but we will not derive this formula here.)
+\end{example}
+
+
+\begin{example}
+    Define a \emph{Jordan null set} to be a Jordan measurable set of Jordan measure zero. Show that any subset of a Jordan null set is a Jordan null set.
+\end{example}
+
+\begin{example}
+    Show that
+        \begin{align*}
+            m(E) := \lim_{N \to \infty}\frac{1}{N^d}\#(E \cap \frac{1}{N}\mathbf{Z}^d)
+        \end{align*}
+    where $\frac{1}{N}\mathbf{Z} := \{\frac{n}{N} : n \in \mathbf{Z}\}$ and $\# A$ denotes the cardinality of a finite set $A$, holds for all Jordan measurable $E \subset \mathbf{R}^d$.
+\end{example}
+
+
+\begin{theorem}[Uniqueness of Jordan measure]\label{thm:uniqueness of jordan measure}
+    Let $d \geq 1$. Let $m' : \mathcal{J}(\mathbf{R}^d) \to \mathbf{R}^+$ be a map from the collection $\mathcal{J}(\mathbf{R}^d)$ of Jordan-measurable subsets of $\mathbf{R}^d$ to the non-negative reals that obeys the non-negativity, finite additivity, and translation invariance properties. Then there exists a constant $c \in \mathbf{R}^+$ such that $m'(E) = cm(E)$ for all Jordan measurable sets $E$. In particular, if we impose the additional normalisation $m'([0, 1]^d) = 1$, then $m' \equiv m$.
+\end{theorem}
+
+\pff Set $c := m'([0, 1))$. Since every elementary sets are Jordan measurable, if $E$ is an elementary set, then from Theorem \ref{thm:uniqueness of elementary measure} we have $m'(E) = cm(E)$ (recall that elementary measure and Jordan measure are coincide for each other for elementary sets). For arbitrary elementary sets $A, B$ that $A \subset E \subset B$, we have $m(E) = \sup_{A \subset E}m(A) = \inf_{B \supset E}m(B)$. This implies that
+    \begin{align*}
+        cm(E)
+        = \sup_{A \subset E} m'(A)
+        = \inf_{B \supset E}m'(B).
+    \end{align*}
+This is trivial to show that $m'$ obeys monotonicity, then for every $\varepsilon > 0$ there exist elementary sets $A,B$ such that
+    \begin{align*}
+        \sup_{A \subset E}m'(A) - \varepsilon
+        \leq m'(A)
+        \leq m'(E)
+        \leq m'(B)
+        \leq \inf_{B \supset E}m'(B) + \varepsilon.
+    \end{align*}
+Because $\varepsilon$ is arbitrary, thus we have $m'(E) = cm(E)$ for all Jordan measurable sets.\qed
+
+
+\begin{proposition}\label{thm:m(ExF)=m(E)m(F) for jordan measure}
+    Let $d_1, d_2 \geq 1$, and let $E_1 \subset \mathbf{R}^{d_1}, E_2 \subset \mathbf{R}^{d_2}$ be Jordan measurable sets. Then $E_1 \times E_2 \subset \mathbf{R}^{d_1 + d_2}$ is Jordan measurable, and $m^{d_1 + d_2}(E_1 \times E_2) = m^{d_1}(E_1) \times m^{d_2}(E_2)$.
+\end{proposition}
+
+\pff For every $\varepsilon > 0$, there exist elementary sets $A_1 \subset E_1 \subset B_1$, $A_2 \subset E_2 \subset B_2$ such that $m(B_1 \setminus A_1) \leq \varepsilon m(B_2)/2$ and $m(B_2 \setminus A_2) \leq \varepsilon m(B_1)/2$. Since we have $A_1 \times A_2 \subset E_1 \times E_2 \subset B_1 \times B_2$, we have
+    \begin{align*}
+        m((B_1 \times B_2) \setminus (A_1 \times A_2))
+        &= m([(B_1 \setminus A_1) \times B_2] \cup [B_1 \times (B_2 \setminus A_2)])\\
+        &\leq m((B_1 \setminus A_1) \times B_2) + m(B_1 \times (B_2 \setminus A_2))\\
+        &= m(B_1 \setminus A_1)m(B_2) + m(B_1)m(B_2 \setminus A_2)\\
+        &\leq \varepsilon
+    \end{align*}
+Thus $E_1 \times E_2$ is Jordan measurable.
+
+By Lemma \ref{thm:m(ExF)=m(E)m(F) for elementary sets} there exist $A_1 \subset E_1$ and $A_2 \subset E_2$ such that
+    \begin{align*}
+        m^{d_1 + d_2}(E_1 \times E_2)
+        &\geq m^{d_1 + d_2}(A_1 \times A_2)\\
+        &= m^{d_1}(A_1)m^{d_2}(A_2)\\
+        &\geq (m^{d_1}(E_1) - \varepsilon)(m^{d_2}(E_2) - \varepsilon).
+    \end{align*}
+For the other hand, there is $B_1 \supset E_1$ and $B_2 \supset E_2$ such that
+    \begin{align*}
+        m^{d_1 + d_2}(E_1 \times E_2)
+        &\leq m^{d_1 + d_2}(B_1 \times B_2)\\
+        &= m^{d_1}(B_1)m^{d_2}(B_2)\\
+        &\leq (m^{d_1}(E_1) + \varepsilon)(m^{d_2}(E_2) + \varepsilon).
+    \end{align*}
+Because $\varepsilon$ is arbitrary, we have $m^{d_1 + d_2}(E_1 \times E_2) = m^{d_1}(E_1)m^{d_2}(E_2)$.\qed
+
+
+\begin{example}
+    Let $E \subset \mathbf{R}^d$ be a bounded set.
+    \begin{enumerate}[label = (\arabic*)]
+        \item Show that $E$ and the closure\footnote{The \emph{closure} of $E$ is defined as the intersection of all closed sets containing $E$.} $\overline{E}$ of $E$ have the same Jordan outer measure.
+        \item Show that $E$ and the interior\footnote{The \emph{interior} of $E$ is defined as the union of all open sets contained in $E$. } $E^\circ$ of $E$ have the same Jordan inner measure.
+        \item Show that $E$ is Jordan measurable if and only if the topological boundary $\partial E$ of $E$ has Jordan outer measure zero.
+        \item Show that the \emph{bullet-riddled square} $[0, 1]^2 \setminus \mathbf{Q}^2$, and set of bullets $[0, 1]^2 \cap \mathbf{Q}^2$, both have Jordan inner measure zero and Jordan outer measure one. In particular, both sets are not Jordan measurable.
+    \end{enumerate}
+\end{example}
+
+
+\subsection{Connection with the Riemann integral}
+
+\begin{definition}[Riemann integrability]\label{def:riemann integrability}
+    Let $[a, b]$ be an interval of positive length, and let $f : [a, b] \to \mathbf{R}$ be a function. A \emph{tagged partition} $\mathcal{P} = ((x_0, x_1, \cdots, x_n), (x^*_1, \cdots, x^*_n))$ of $[a, b]$ is a finite sequence of real numbers $a = x_0 < x_1 < \cdots < x_n = b$, together with additional numbers $x_{i - 1} \leq x^*_i \leq x_i$ for each $i = 1, \cdots, n$. We abbreviate $x_i - x_{i - 1}$ as $\delta x_i$. The quantity $\Delta(\mathcal{P}) := \sup_{1 \leq i \leq n}\delta x_i$ will be called the \emph{norm} of the tagged partition. The \emph{Riemann sum} $\mathcal{R}(f, \mathcal{P})$ of $f$ with respect to the tagged partition $\mathcal{P}$ is defined as
+        \begin{align*}
+            \mathcal{R}(f, \mathcal{P}) := \sum_{i = 1}^{n}f(x^*_i)\delta x_i.
+        \end{align*}
+    We say that $f$ is \emph{Riemann integrable} on $[a, b]$ if there exists a real number, denote $\int_{a}^{b}f(x) dx$ and referred to as the \emph{Riemann integral} of $f$ on $[a, b]$, for which we have
+        \begin{align*}
+            \int_{a}^{b}f(x)dx = \lim_{\Delta(\mathcal{P}) \to 0}\mathcal{R}(f, \mathcal{P})
+        \end{align*}
+    by which we mean that for every $\varepsilon > 0$ there exists $\delta > 0$ such that $|\mathcal{R}(f, \mathcal{P}) - \int_{a}^{b}f(x)dx| \leq \varepsilon$ for every tagged partition $\mathcal{P}$ with $\Delta(\mathcal{P}) \leq \delta$.
+
+    If $[a, b]$ is an interval of zero length, we adopt the convention that every function $f : [a, b] \to \mathbf{R}$ is Riemann integrable, with a Riemann integral of zero.
+\end{definition}
+
+\begin{proposition}[Piecewise constant functions]\label{thm:piecewise constant functions}
+    Let $[a, b]$ be an interval. A \emph{piecewise constant function} $f : [a, b] \to \mathbf{R}$ is a function for which there exists a partition of $[a, b]$ into finitely many intervals $I_1, \cdots, I_n$ such that $f$ is equal to a constant $c_i$ on each of the intervals $I_i$. If $f$ is piecewise constant, then the expression
+        \begin{align*}
+            \sum_{i = 1}^{n}c_i|I_i|
+        \end{align*}
+    is independent of the choice of partition used to demonstrate the piecewise constant nature of $f$. We denote this quantity by $p.c.\int_{a}^{b}f(x)dx$, and refer to it as the \emph{piecewise constant integral} of $f$ on $[a, b]$.
+\end{proposition}
+
+\pff Since $[a, b]$ is elementary, by Proposition \ref{thm:measure of an elementary set}(ii), it is independent of the partition. Let $J_1, \cdots, J_m$ be a different partition of $[a, b]$ from $I_1, \cdots, I_n$ such that $f$ be a piecewise constant function. Then $\{I_i \cap J_j : 1 \leq i \leq n, 1 \leq j \leq m\}$ is also a partition of $[a, b]$, and we have
+    \begin{align*}
+        \sum_{i = 1}^{n}\sum_{j = 1}^{m} |I_i \cap J_j| = \sum_{i = 1}^{n} |I_i| = \sum_{j = 1}^{m} |J_j|.
+    \end{align*}
+We have $c_i = c_j$ for all $I_i \cap I_j$. Thus
+    \begin{align*}
+        \sum_{i = 1}^{n} c_i|I_i|
+        &= \sum_{i = 1}^{n} c_i \left(\sum_{j = 1}^{m}|I_i \cap J_j|\right)\\
+        &= \sum_{j = 1}^{m}\left(\sum_{i = 1}^{n} c_i|I_i \cap J_j|\right)\\
+        &= \sum_{i = 1}^{n}\left(\sum_{j = 1}^{m} c_j|I_i \cap J_j|\right)\\
+        &= \sum_{j = 1}^{m} c_j \left(\sum_{i = 1}^{n}|I_i \cap J_j|\right)\\
+        & = \sum_{j = 1}^{m} c_j|J_j|.
+    \end{align*}
+Thus $\sum_{i = 1}^{n} c_i|I_i|$ is independent of the choice of partition and we denote this quantity as $\pcint_{a}^{b}f(x)dx := \sum_{i = 1}^{n} c_i|I_i|$.\qed
+
+\begin{theorem}[Basic properties of the piecewise constant integral]\label{thm:basic properties of the piecewise constant integral}
+    Let $[a, b]$ be an interval, and let $f, g : [a, b] \to \mathbf{R}$ be piecewise constant functions.
+        \begin{enumerate}
+            \item (Linearity) For any real number $c$, $cf$ and $f + g$ are piecewise constant, with $\pcint_{a}^{b}cf(x)dx = c\pcint_{a}^{b}f(x)dx$ and $\pcint_{a}^{b}f(x) + g(x) dx = \pcint_{a}^{b}f(x) + \pcint_{a}^{b}g(x)dx$.
+            \item (Monotonicity) If $f \leq g$ pointwise (i.e., $f(x) \leq g(x)$ for all $x \in [a, b]$), then $\pcint_{a}^{b}f(x)dx \leq \pcint_{a}^{b}g(x)dx$.
+            \item (Indicator) If $E$ is an elementary subset of $[a, b]$, then the indicator function $1_E : [a, b] \to \mathbf{R}$ (defined by setting $1_E(x) := 1$ when $x \in E$ and $1_E(x) := 0$ otherwise) is piecewise constant, and $\pcint_{a}^{b}1_E(x)dx = m(E)$.
+        \end{enumerate}
+\end{theorem}
+
+\pff (i) Let $I_1, \cdots, I_n$ and $J_1, \cdots, J_m$ be partitions of $f$ and $g$, respectively. Then $f$ and $g$ are piecewise constant functions with respect to the partition $\{I_i \cap J_j : 1 \leq i \leq n, 1 \leq j \leq m\}$. In each $I_i \cap J_j$, $f$ equals to $a_i$ and $g$ equals to $b_j$.
+
+We can see that $cf$ is a piecewise constant and in each $I_i \cap J_j$ equals to $c \cdot a_i$, and
+    \begin{align*}
+        \pcint_{a}^{b} cf(x)dx = \sum_{i = 1}^{n}c \cdot a_i|I_i| = c\sum_{i = 1}^{n}a_i|I_i| = c \cdot \pcint_{a}^{b} f(x)dx.
+    \end{align*}
+
+We also have $f + g$ is a piecewise constant and in each $I_i \cap J_j$ equals to $a_i + b_j$, and
+    \begin{align*}
+        \pcint_{a}^{b}f(x) + g(x)dx
+        &= \sum_{i = 1}^{n}\sum_{j = 1}^{m}(a_i + b_j)|I_i \cap I_j|\\
+        &= \sum_{i = 1}^{n}\sum_{j = 1}^{m}a_i|I_i \cap I_j| + \sum_{j = 1}^{m}\sum_{i = 1}^{n}b_j|I_i \cap I_j|\\
+        &= \sum_{i = 1}^{n}a_i|I_i| + \sum_{j = 1}^{m}b_j|I_j|\\
+        &= \pcint_{a}^{b}f(x)dx + \pcint_{a}^{b}g(x)dx.
+    \end{align*}
+
+(ii) Since $f \leq g$, we have $a_i \leq b_j$ for all $I_i \cap J_j$. Then
+    \begin{align*}
+        \pcint_{a}^{b}f(x)dx
+        &= \sum_{i = 1}^{n}\sum_{j = 1}^{m}a_i|I_i \cap I_j|\\
+        &\leq \sum_{j = 1}^{m}\sum_{i = 1}^{n}b_j|I_i \cap I_j|\\
+        &= \pcint_{a}^{b}g(x)dx.
+    \end{align*}
+
+(iii) Because $E$ is elementary, then $[a, b] \setminus E$ is also elementary. Then there is disjoint sequences $I_1, \cdots, I_n$ and $J_1, \cdots, J_m$ such that $E = \bigcup_{i = 1}^{n}I_i$ and $[a, b] \setminus E = \bigcup_{j = 1}^{m}J_j$ (see Lemma \ref{thm:measure of an elementary set}). Then $I_1, \cdots, I_n, J_1, \cdots, J_m$ is a partition of $[a, b]$, and $1_E$ is a piecewise constant function. Thus
+    \begin{align*}
+        \pcint_{a}^{b}1_E(x)dx
+        = \sum_{i = 1}^{n} 1 \cdot |I_i|
+            + \sum_{j = 1}^{m} 0 \cdot |J_j|
+        = \sum_{i = 1}^{n} |I_i|
+        = m(E).
+    \end{align*}\qed
+
+\begin{definition}[Darboux integral]\label{def:darboux integral}
+    Let $[a, b]$ be an interval, and $f : [a, b] \to \mathbf{R}$ be a bounded function. The \emph{lower Darboux integral} $\underline{\int_{a}^{b}} f(x)dx$ of $f$ on $[a, b]$ is defined as
+        \begin{align*}
+            \underline{\int_{a}^{b}} f(x)dx := \sup_{g \leq f, \text{piecewise constant}}\pcint_{a}^{b}g(x)dx,
+        \end{align*}
+    where $g$ ranges over all piecewise constant functions that are pointwise bounded above by $f$. (The hypothesis that $f$ is bounded ensures that the supremum is over a non-empty set.) Similarly, we define the \emph{upper Darboux integral} $\overline\int_{a}^{b} f(x)dx$ of $f$ on $[a, b]$ by the formula
+        \begin{align*}
+            \overline{\int_{a}^{b}} f(x)dx := \inf_{h \geq f, \text{piecewise constant}} \pcint_{a}^{b} h(x)dx.
+        \end{align*}
+    Clearly $\underline{\int_{a}^{b}} f(x)dx \leq \overline{\int_{a}^{b}} f(x)dx$. If these two quantities are equal, we say that $f$ is \emph{Darboux integrable}, and refer to this quantity as the \emph{Darboux integral} of $f$ on $[a, b]$.
+\end{definition}
+
+\begin{remark}
+    Note that the upper and lower Darboux integrals are related by the reflection identity
+        \begin{align*}
+            \overline{\int_{a}^{b}} -f(x)dx = - \underline{\int_{a}^{b}}f(x)dx.
+        \end{align*}
+\end{remark}
+
+
+\begin{proposition}\label{thm:riemann and darboux integral are equal under bounded function}
+    Let $[a, b]$ be an interval, and $f: [a, b] \to \mathbf{R}$ be a bounded function. We say that $f$ is Riemann integrable if and only if it is Darboux integrable, in which case the Riemann integral and Darboux integrals are equal.
+\end{proposition}
+
+\pff First we suppose that $f$ is Riemann integrable. Since $f$ is bounded, define $\underline{f} : [a, b] \to \mathbf{R}$ as $\underline{f}(x) = \inf_{x \in [x_{i - 1}, x_i]}f(x)$ and $\overline{f} : [a, b] \to \mathbf{R}$ as $\overline{f}(x) = \sup_{x \in [x_{i - 1}, x_i]}f(x)$. We can see that $\underline{f}$ and $\overline{f}$ are piecewise constant functions with respect to $\mathcal{P}$ such that $\underline{f} \leq f \leq \overline{f}$. Then for arbitrary piecewise constant function $g$ that minorize $f$, we have $\pcint_{a}^{b}g(x)dx \leq \mathcal{R}(\underline{f}, \mathcal{P})$, and piecewise constant function $h$ that majorize $f$, we have $\pcint_{a}^{b}h(x)dx \geq \mathcal{R}(\overline{f}, \mathcal{P})$.
+
+Since $f$ is Riemann integrable, by Definition \ref{def:riemann integrability}, for every $\varepsilon > 0$ there exists $\delta > 0$ such that
+    \begin{align*}
+        \left|\mathcal{R}(f, \mathcal{P}) - \int_{a}^{b}f(x)dx\right|\leq \varepsilon
+    \end{align*}
+for every $\mathcal{P}$ with $\Delta(\mathcal{P}) \leq \delta$. Then
+    \begin{align*}
+        \mathcal{R}(\underline{f}, \mathcal{P}) - \varepsilon
+        \leq \mathcal{R}(f, \mathcal{P}) - \varepsilon
+        \leq \int_{a}^{b}f(x)dx
+        \leq \mathcal{R}(f, \mathcal{P}) + \varepsilon
+        \leq \mathcal{R}(\overline{f}, \mathcal{P}) + \varepsilon,
+    \end{align*}
+so that
+    \begin{align*}
+        \pcint_{a}^{b}g(x)dx - \varepsilon
+        \leq \int_{a}^{b}f(x)dx
+        \leq \pcint_{a}^{b}h(x)dx + \varepsilon
+    \end{align*}
+Because $\varepsilon$ is arbitrary, taking the supremum and infimum, we have
+    \begin{align*}
+        \underline{\int_{a}^{b}}f(x)dx
+        \leq \int_{a}^{b}f(x)dx
+        \leq \overline{\int_{a}^{b}}f(x)dx.
+    \end{align*}
+
+For the other hand, we have $\underline{\int_{a}^{b}}f(x)dx \leq \mathcal{R}(\underline{f}, \mathcal{P})$ and $\overline{\int_{a}^{b}}f(x)dx \geq \mathcal{R}(\overline{f}, \mathcal{P})$ from $\pcint_{a}^{b}g(x)dx \leq \mathcal{R}(\underline{f}, \mathcal{P})$ and $\pcint_{a}^{b}h(x)dx \geq \mathcal{R}(\overline{f}, \mathcal{P})$. Then
+    \begin{align*}
+        \underline{\int_{a}^{b}}f(x)dx - \overline{\int_{a}^{b}}f(x)dx
+        &\leq \mathcal{R}(\underline{f}, \mathcal{P}) - \mathcal{R}(\overline{f}, \mathcal{P})\\
+        &\leq \int_{a}^{b}f(x)dx + \varepsilon
+            - \int_{a}^{b}f(x)dx + \varepsilon\\
+        &= 2\varepsilon
+    \end{align*}
+for every $\mathcal{P}$ with $\Delta(\mathcal{P}) \leq \delta$. Since $\varepsilon$ is arbitrary, we have $\overline{\int_{a}^{b}}f(x)dx = \underline{\int_{a}^{b}}f(x)dx$. Thus
+\begin{align*}
+    \int_{a}^{b}f(x)dx = \underline{\int_{a}^{b}}f(x)dx =\overline{\int_{a}^{b}}f(x)dx
+\end{align*}
+and $f$ is Darboux integrable.
+
+\begin{comment}
+For the other hand, we see that for every $\mathcal{P}$, $f(x) := f(x_i^*)$ defined on $[x_{i - 1}, x_i]$ is piecewise constant, hence $\mathcal{R}(f, \mathcal{P}) = \pcint_{a}^{b}f(x)dx$. Then
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx
+         = \inf(\mathcal{R}(f, \mathcal{P}))
+        \leq \int_{a}^{b}f(x)dx
+        \leq \sup(\mathcal{R}(f, \mathcal{P}))
+        = \underline{\int_{a}^{b}}f(x)dx.
+    \end{align*}
+\end{comment}
+
+Conversely, suppose that $f$ is Darboux integrable. By Definition \ref{def:darboux integral}, we have
+    \begin{align*}
+        \int_{a}^{b}f(x)dx
+        = \underline{\int_{a}^{b}}f(x)dx
+        = \overline{\int_{a}^{b}}f(x)dx.
+    \end{align*}
+We want to show that
+    \begin{align*}
+        \underline{\int_{a}^{b}}f(x)dx = \sup(\mathcal{R}(\underline{f}, \mathcal{P}))
+    \end{align*}
+and
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx = \inf(\mathcal{R}(\overline{f}, \mathcal{P})).
+    \end{align*}
+Then Darboux integrability implies that
+    \begin{align*}
+        \int_{a}^{b}f(x)dx = \sup(\mathcal{R}(\underline{f}, \mathcal{P})) = \inf(\mathcal{R}(\overline{f}, \mathcal{P})).
+    \end{align*}
+This is sufficient to show that
+    \begin{align*}
+        \int_{a}^{b}f(x)dx = \lim_{\Delta(\mathcal{P}) \to 0}\mathcal{R}(f, \mathcal{P})
+    \end{align*}
+and $f$ is Riemann integrable.
+
+We already show that $\underline{\int_{a}^{b}}f(x)dx \leq \mathcal{R}(\underline{f}, \mathcal{P})$ and $\overline{\int_{a}^{b}}f(x)dx \geq \mathcal{R}(\overline{f}, \mathcal{P})$, taking the supremum and infimum, we have
+    \begin{align*}
+        \underline{\int_{a}^{b}}f(x)dx \leq \sup(\mathcal{R}(\underline{f}, \mathcal{P}))
+    \end{align*}
+and
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx \geq \inf(\mathcal{R}(\overline{f}, \mathcal{P})).
+    \end{align*}
+To prove in the other direction, suppose for sake of contradiction that  $\underline{\int_{a}^{b}}f(x)dx < \sup(\mathcal{R}(\underline{f}, \mathcal{P}))$. Then there exists some $\mathcal{P}$ such that
+    \begin{align*}
+        \underline{\int_{a}^{b}}f(x)dx
+        < \mathcal{R}(\underline{f}, \mathcal{P}).
+    \end{align*}
+Since $\underline{f}$ minorizes $f$ (i.e., $\underline{f} \leq f$ for all $x$), by Definition \ref{def:darboux integral}, we have
+    \begin{align*}
+        \mathcal{R}(\underline{f}, \mathcal{P})
+        \leq \underline{\int_{a}^{b}}f(x)dx,
+    \end{align*}
+a contradiction. Thus $\underline{\int_{a}^{b}}f(x)dx \geq \sup(\mathcal{R}(\underline{f}, \mathcal{P}))$. This implies that
+    \begin{align*}
+        \underline{\int_{a}^{b}}f(x)dx = \sup(\mathcal{R}(\underline{f}, \mathcal{P})).
+    \end{align*}
+A similar argument shows that
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx = \inf(\mathcal{R}(\overline{f}, \mathcal{P})),
+    \end{align*}
+as desired.\qed
+
+
+\begin{proposition}\label{thm:continuous function is riemann integrable}
+    Any continuous function $f : [a, b] \to \mathbf{R}$ is Riemann integrable. More generally, any bounded, piecewise continuous\footnote{A function $f : [a, b] \to \mathbf{R}$ is \emph{piecewise continuous} if one can partition $[a, b]$ into finitely many intervals, such that $f$ is continuous on each interval.} function $f : [a, b] \to \mathbf{R}$ is Riemann integrable.
+\end{proposition}
+
+\pff Since $f$ is continuous and defined on $[a, b]$, it is bounded. By Proposition \ref{thm:riemann and darboux integral are equal under bounded function}, we only need to show that $f$ is Darboux integrable. From continuity, for every $\varepsilon$ there exists a $\delta > 0$ such that $|f(x) - f(y)| \leq \varepsilon$ for all $x, y \in [a, b]$ such that $|x - y| \leq \delta$. By Archimedes principle, there exists an $N$ such that $(b - a)/N < \delta$. Let $I_k = [a + \frac{(b - a)(k - 1)}{N}, a + \frac{(b - a)k}{N}]$. Then $I_1, \cdots, I_N$ is a partition of $[a, b]$ with $|I_k| = (b - a)/N$.
+
+From $\underline{\int_{a}^{b}}f(x)dx = \sup(\mathcal{R}(\underline{f}, \mathcal{P}))$ and $\overline{\int_{a}^{b}}f(x)dx = \inf(\mathcal{R}(\overline{f}, \mathcal{P}))$ we have
+    \begin{align*}
+        \underline{\int_{a}^{b}}f(x)dx \geq \sum_{k = 1}^{N}(\inf_{x \in I_k}f(x))|I_k|
+    \end{align*}
+and
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx \leq \sum_{k = 1}^{N}(\sup_{x \in I_k}f(x))|I_k|,
+    \end{align*}
+so
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx - \underline{\int_{a}^{b}}f(x)dx
+        \leq \sum_{k = 1}^{N}(\sup_{x \in I_k}f(x) - \inf_{x \in I_k}f(x))|I_k|.
+    \end{align*}
+Since $|f(x) - f(y)| \leq \varepsilon$ is hold for all $x, y \in I_k$ for that $|x - y| \leq |I_k| < \delta$, we have
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx - \underline{\int_{a}^{b}}f(x)dx
+        \leq \sum_{k = 1}^{N}\varepsilon|I_k|
+        = \varepsilon(b - a).
+    \end{align*}
+Since $\varepsilon$ is arbitrary, we have
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx = \underline{\int_{a}^{b}}f(x)dx.
+    \end{align*}
+Thus by Definition \ref{def:darboux integral} and Proposition \ref{thm:riemann and darboux integral are equal under bounded function}, $f$ is Riemann integrable.\qed
+
+
+Now we connect the Riemann integral to Jordan measure in two ways. First, we connect the Riemann integral to one-dimensional Jordan measure:
+\begin{theorem}[Basic properties of the Riemann integral]\label{thm:basic properties of the riemann integral}
+    Let $[a, b]$ be an interval, and let $f,g : [a, b] \to \mathbf{R}$ be Riemann integrable.
+        \begin{enumerate}
+            \item (Linearity) For any real number $c$, $cf$ and $f + g$ are Riemann integrable, with $\int_{a}^{b}cf(x)dx = c\int_{a}^{b}f(x)dx$ and $\int_{a}^{b}f(x) + g(x)dx = \int_{a}^{b}f(x) + \int_{a}^{b}g(x)dx$.
+            \item (Monotonicity) If $f \leq g$ pointwise (i.e., $f(x) \leq g(x)$ for all $x \in [a, b]$) then $\int_{a}^{b}f(x)dx \leq \int_{a}^{b}g(x)dx$.
+            \item (Indicator) If $E$ is a Jordan measurable of $[a, b]$, then the indicator function $1_E : [a, b] \to \mathbf{R}$ (defined by setting $1_E(x) := 1$ when $x \in E$ and $1_E(x):= 0$ otherwise) is Riemann integrable, and $\int_{a}^{b}1_E(x)dx = m(E)$.
+        \end{enumerate}
+    These properties uniquely define the Riemann integral, in the sense that the function $f \mapsto \int_{a}^{b}f(x)dx$ is the only map from the space of Riemann integrable functions on $[a, b]$ to $\mathbf{R}$ which obeys all three of the above properties.
+\end{theorem}
+
+\pff (i) Since $f$ is Riemann integrable, we have
+    \begin{align*}
+        \int_{a}^{b}f(x)dx
+        = \lim_{\Delta(\mathcal{P}) \to 0}\sum_{i = 1}^{n}f(x_i^*)\delta x_i.
+    \end{align*}
+Then for $cf$
+    \begin{align*}
+        \int_{a}^{b}cf(x)dx
+        = \lim_{\Delta(\mathcal{P}) \to 0}\sum_{i = 1}^{n}cf(x_i^*)
+        = c\lim_{\Delta(\mathcal{P}) \to 0}\sum_{i = 1}^{n}f(x_i^*)\delta x_i
+    \end{align*}
+which is convergent. Thus $cf$ is Riemann integrable with $\int_{a}^{b}cf(x)dx = c\int_{a}^{b}f(x)dx$.
+
+Similarly, we have
+    \begin{align*}
+        \int_{a}^{b}f(x)dx + \int_{a}^{b}g(x)dx
+        &= \lim_{\Delta(\mathcal{P}) \to 0}\sum_{i = 1}^{n}f(x_i^*)\delta x_i
+            + \lim_{\Delta(\mathcal{P}) \to 0}\sum_{i = 1}^{n}g(x_i^*)\delta x_i\\
+        &= \lim_{\Delta(\mathcal{P}) \to 0}\sum_{i = 1}^{n}(f(x_i^*) + g(x_i^*))\delta x_i
+    \end{align*}
+which is convergent. Thus $f + g$ is Riemann integrable with $\int_{a}^{b}f(x)dx + \int_{a}^{b}g(x)dx = \int_{a}^{b}f(x) + g(x)dx$.
+
+(ii) Since $f \leq g$, we have
+    \begin{align*}
+        \lim_{\Delta(\mathcal{P}) \to 0}\sum_{i = 1}^{n}f(x_i^*)\delta x_i
+        \leq \lim_{\Delta(\mathcal{P}) \to 0}\sum_{i = 1}^{n}g(x_i^*)\delta x_i,
+    \end{align*}
+thus $\int_{a}^{b}f(x)dx \leq \int_{a}^{b}g(x)dx$.
+
+(iii) Since $1_E$ is bounded, by Proposition \ref{thm:riemann and darboux integral are equal under bounded function}, we show that $1_E$ is Darboux integrable. By Theorem \ref{thm:basic properties of the piecewise constant integral}(iii) and Definition \ref{def:darboux integral}, for arbitrary elementary set $A \subset E$,
+    \begin{align*}
+        m(A) = \pcint_{a}^{b}1_A(x)dx
+        \leq \underline{\int_{a}^{b}}1_E(x)dx.
+    \end{align*}
+Taking the supremum, we have $\JIM(E) \leq \underline{\int_{a}^{b}}1_E(x)dx$ by Definition \ref{def:jordan measure}. Similarly, for every elementary set $B \supset E$ where $B \subset [a, b]$, we have
+    \begin{align*}
+        m(B) = \pcint_{a}^{b}1_B(x)dx \geq \overline{\int_{a}^{b}}1_E(x)dx.
+    \end{align*}
+Taking the infimum, we have $\JOM(E) \geq \overline{\int_{a}^{b}}1_E(x)dx$.
+
+Because $E$ is Jordan measurable, from
+    \begin{align*}
+        \JIM(E) \leq \underline{\int_{a}^{b}}1_E(x)dx
+        \leq \overline{\int_{a}^{b}}1_E(x)dx
+        \leq \JOM(E)
+    \end{align*}
+and $\JIM(E) = \JOM(E)$ we have $\underline{\int_{a}^{b}}1_E(x)dx = \overline{\int_{a}^{b}}1_E(x)dx$. Hence $1_E$ is Riemann integrable.
+
+Finally, we prove that these three properties uniquely define the Riemann integral. Let $\mathcal{R}([a, b] \to \mathbf{R})$ be the space of Riemann integrable functions on $[a, b]$ to $\mathbf{R}$. The Riemann integral is the map $\mathcal{M} : \mathcal{R}([a, b] \to \mathbf{R}) 
+\to \mathbf{R}$. Suppose that there is another map $\mathcal{M}' : \mathcal{R}([a, b] \to \mathbf{R}) \to \mathbf{R}$ satisfying above three properties where $\mathcal{M} \neq \mathcal{M}'$. Then the property (i) means that for every Riemann integrable functions $f, g \in \mathcal{R}([a, b] \to \mathbf{R})$ and constants $a, b \in \mathbf{R}$ we have $\mathcal{M}(af + bg) = a\mathcal{M}(f) + b\mathcal{M}(g)$. This is also holds for $\mathcal{M}'$.
+
+We already know that every piecewise constant function $f$ is Riemann integrable, i.e., $f \in \mathcal{R}([a, b] \to \mathbf{R})$. Let $f$ be p.c. with respect to $I_1, \cdots, I_n$ with $c_1, \cdots, c_n$. Then we have
+    \begin{align*}
+        f(x) = \sum_{i = 1}^{n}c_i1_{I_i}(x),
+    \end{align*}
+so that
+    \begin{align*}
+        \mathcal{M}'(f)
+        &= \mathcal{M}'\Big(\sum_{i = 1}^{n}c_i1_{I_i}(x)\Big)\\
+        &= \sum_{i = 1}^{n}c_i\mathcal{M}'(1_{I_i}(x))\\
+        &= \sum_{i = 1}^{n}c_im(I_i)\\
+        &= \sum_{i = 1}^{n}c_i\mathcal{M}(1_{I_i}(x))\\
+        &= \sum_{i = 1}^{n}\mathcal{M}(c_i1_{I_i}(x))\\
+        &= \mathcal{M}\Big(\sum_{i = 1}^{n}c_i1_{I_i}(x)\Big)\\
+        &= \mathcal{M}(f).
+    \end{align*}
+Since the Riemann integral depends on the piecewise constant integral, we have $\mathcal{M}(f) = \mathcal{M}'(f)$ for arbitrary Riemann integrable function, a contradiction.\qed
+
+
+\newa Next, we connect the integral to two-dimensional Jordan measure:
+
+\begin{proposition}[Area interpretation of the Riemann integral]
+    Let $[a, b]$ be an interval, and let $f : [a, b] \to \mathbf{R}$ be a bounded function. Then $f$ is Riemann integrable if and only if the sets $E_+ := \{(x, t) : x \in [a, b]; 0 \leq t \leq f(x)\}$ and $E_- := \{(x, t) : x \in [a, b]; f(x) \leq t \leq 0\}$ are both Jordan measurable in $\mathbf{R}^2$, in which case one has
+        \begin{align*}
+            \int_{a}^{b}f(x)dx = m^2(E_+) - m^2(E_-),
+        \end{align*}
+    where $m^2$ denotes two-dimensional Jordan measure.
+\end{proposition}
+
+\pff We first suppose that $f$ is non-negative, then $m^2(E_-) = 0$.
+
+Suppose that $f$ is Riemann integrable. Let $I_1, \cdots, I_n$ be a partition of $[a, b]$, let $\overline{f}(x) = \sup_{x \in I_k}f(x)$ and $\underline{f}(x) = \inf_{x \in I_k}f(x)$. Then we have
+    \begin{align*}
+        E_+
+        \subset \overline{E}
+            := \bigcup_{k = 1}^{n}(I_k \times [0, \overline{f}(x)])
+    \end{align*}
+and
+    \begin{align*}
+        E_+
+        \supset \underline{E}
+            := \bigcup_{k = 1}^{n}(I_k \times [0, \underline{f}(x)]).
+    \end{align*}
+By Proposition \ref{thm:m(ExF)=m(E)m(F) for jordan measure}, we have
+    \begin{align*}
+        m^2(\overline{E}) = \sum_{k = 1}^{n}\overline{f}(x)|I_k|
+    \end{align*}
+and
+    \begin{align*}
+        m^2(\underline{E}) = \sum_{k = 1}^{n}\underline{f}(x)|I_k|
+    \end{align*}
+Since $f$ is Riemann integrable, we have
+    \begin{align*}
+        m^2(\underline{E}) = m^2(\overline{E}) = \lim_{\Delta(\mathcal{P}) \to 0} \sum_{k = 1}^{n}f(x_i^*)|I_k| = \int_{a}^{b}f(x)dx.
+    \end{align*}
+Thus from monotonicity of Jordan measure, we have $m^2(E_+) = \int_{a}^{b}f(x)dx$.
+
+Conversely, suppose that
+    \begin{align*}
+        \int_{a}^{b}f(x)dx = m^2(E_+).
+    \end{align*}
+Let $\underline{E}, \overline{E}$ be arbitrary elementary sets such that $\underline{E} \subset E_+ \subset \overline{E}$.
+
+Since the elementary sets' expression is independent of the choice of partition (see Proposition \ref{thm:measure of an elementary set}), we express elementary sets $\underline{E}$ and $\overline{E}$ as disjoint unions $\underline{E} = \bigcup_{i = 1}^{n}A_i$ and $\overline{E} = \bigcup_{j = 1}^{m}B_j$, where $A_i = I_{i, 1} \times I_{i, 2}$ and $B_j = J_{j, 1} \times J_{j, 2}$, such that $I_{1, 1}, \cdots, I_{n, 1}$ and $J_{1, 1}, \cdots, J_{m, 1}$ be two partition of $[a, b]$. Then we have $|I_{i, 2}| \leq f(x)$ and $|J_{j, 2}| \geq f(y)$ for all $x \in I_{i, 1}$ and $y \in J_{j, 1}$.
+
+Now we define piecewise constant functions $g,h : [a, b] \to \mathbf{R}$ as $g(x) := |I_{i, 2}|$ for $x \in I_{i, 1}$ and $h(x) := |J_{j, 2}|$ for $x \in J_{j, 1}$. Then
+    \begin{align*}
+        \underline{\int_{a}^{b}}f(x)dx
+        = \sup_{g \leq f}\pcint_{a}^{b}g(x)dx
+        = \sup_{g \leq f}\sum_{i = 1}^{n}g(x)|I_{i, 1}|
+        = \sup_{\underline{E} \subset E_+}m(\underline{E}).
+    \end{align*}
+and
+    \begin{align*}
+        \overline{\int_{a}^{b}}f(x)dx
+        = \inf_{h \geq f}\pcint_{a}^{b}h(x)dx
+        = \inf_{h \geq f}\sum_{i = 1}^{n}h(x)|J_{i, 1}|
+        = \inf_{\overline{E} \supset E_+}m(\overline{E}).
+    \end{align*}
+Therefore,
+    \begin{align*}
+        \inf_{\overline{E} \supset E_+}m(\overline{E})
+        = \overline{\int_{a}^{b}}f(x)dx
+        \leq \underline{\int_{a}^{b}}f(x)dx
+        = \sup_{\underline{E} \subset E_+}m(\underline{E}).
+    \end{align*}
+Because $E_+$ is Jordan measurable, by Definition \ref{def:jordan measure}, there exist elementary sets $\underline{E} \subset E_+ \subset \overline{E}$ such that
+    \begin{align*}
+        m(E_+)
+        = \sup_{\underline{E} \subset E_+}m(\underline{E})
+        = \inf_{\overline{E} \supset E_+}m(\overline{E}).
+    \end{align*}
+Thus $f$ is Riemann integrable.
+
+A similar argument shows that when $f$ is negative, we have
+    \begin{align*}
+        \int_{a}^{b}f(x)dx = -m^2(E_-)
+    \end{align*}
+if and only if $f$ is Riemann integrable.
+
+Define functions $f^+$ and $f^-$ from $[a, b]$ to $\mathbf{R}$ by
+    \begin{align*}
+        f^+(x) := \left\{\begin{array}{ll}
+            f(x),   &\text{if } f(x) \geq 0,\\
+            0,      &\text{if } f(x) < 0,\\
+        \end{array}\right.
+    \end{align*}
+and
+    \begin{align*}
+        f^-(x) := \left\{\begin{array}{ll}
+            0,      &\text{if } f(x) \geq 0,\\
+            -f(x),  &\text{if } f(x) < 0.
+        \end{array}\right.
+    \end{align*}
+Then $f = f^+ - f^-$ and
+    \begin{align*}
+        \int_{a}^{b}f(x)dx
+        = \int_{a}^{b}f^+(x)dx - \int_{a}^{b}f^-(x)dx
+        = m^2(E_+) - m^2(E_-),
+    \end{align*}
+as desired.\qed
+
+%We extend the definition of the Riemann and Darboux integrals to higher dimensions.
+
+
+
+\section{Lebesgue measure}
+
+Following example shows that not all sets are Jordan measurable, even if one restricts attention to bounded sets.
+
+\begin{example}
+    The countable union $\bigcup_{n = 1}^{\infty} E_n$ or countable intersection $\bigcap_{n = 1}^{\infty} E_n$ of Jordan measurable sets $E_1, E_2, \cdots \subset \mathbf{R}$ need not be Jordan measurable, even when bounded.
+\end{example}
+
+\pff We know that $[0, 1] \setminus \mathbf{Q}$ is not Jordan measurable. Since $\mathbf{Q}$ is countable, then $[0, 1] \setminus \mathbf{Q}$ can be represented as the countable union of open interval where each interval is Jordan measurable.
+
+For the second assertion, suppose that $[0, 1] \setminus \mathbf{Q} = \bigcup_{n = 1}^{\infty}E_n$ for Jordan measurable sets $E_1, E_2, \cdots$. Then $[0, 1] \setminus \bigcup_{n = 1}^{\infty}E_n = \bigcap_{n = 1}^{\infty}([0, 1] \setminus E_n)$. Since $[0, 1] \setminus E_n$ are Jordan measurable for all $n \geq 1$ and $[0, 1] \setminus \bigcup_{n = 1}^{\infty}E_n = [0, 1] \cap \mathbf{Q}$ which is not Jordan measurable.\qed
+
+
+\begin{definition}[Lebesgue measurability]\label{def:lebesgue measurability}
+    The \emph{Lebesgue outer measure} $m^*(E)$ of $E$ is defined as
+        \begin{align*}
+            m^*(E) := \inf_{\bigcup_{n = 1}^{\infty} B_n \supset E; B_n \text{ boxes}}\sum_{n = 1}^{\infty}|B_n|.
+        \end{align*}
+    A set $E \subset \mathbf{R}^d$ is said to be \emph{Lebesgue measurable} if, for every $\varepsilon > 0$, there exists an open set $U \subset \mathbf{R}^d$ containing $E$ such that $m^*(U \setminus E) \leq \varepsilon$. If $E$ is Lebesgue measurable, we refer to $m(E) := m^*(E)$ as the Lebesgue measure of $E$. We also write $m(E)$ as $m^d(E)$ when we wish to emphasise the dimension $d$.
+\end{definition}
+
+
+
+\subsection{Properties of Lebesgue outer measure} 
+
+We begin by studying the Lebesgue outer measure $m^*$, which was defined earlier, and takes values in the extended non-negative real axis $[0, +\infty]$. We first record three easy properties of Lebesgue outer measure, which we will use repeatedly in the sequel without further comment:
+
+\begin{proposition}[The outer measure axioms]\label{thm:the outer measure axioms}
+    \quad
+    \begin{enumerate}
+        \item (Empty set) $m^*(\emptyset) = 0$.
+        \item (Monotonicity) If $E \subset F \subset \mathbf{R}^d$, then $m^*(E) \leq m^*(F)$.
+        \item (Countable subadditivity) If $E_1, E_2, \cdots \subset \mathbf{R}^d$ is a countable sequence of sets, then $m^*(\bigcup_{n = 1}^{\infty}E_n) \leq \sum_{n = 1}^{\infty}m^*(E_n)$.
+    \end{enumerate}
+\end{proposition}
+
+\pff (i) Since empty set is subset of any set, in particular, we have $B_n = \emptyset$ for all $n \geq 1$. By Definition \ref{def:lebesgue measurability}, $m^*(\emptyset) = \sum_{n = 1}^{\infty}|B_n| = 0$.
+
+(ii) If $E \subset F$, every collection of boxes cover $F$ must cover $E$, thus $m^*(E) \leq m^*(F)$.
+
+(iii) If $m^*(E_n) = +\infty$ for some $n \geq 1$, the conclusion is trivial. We suppose that $m^*(E_n)$ is finite for all $n \geq 1$. Let $\varepsilon > 0$. For every $n \geq 1$ there exists a cover such that $E_n \subset \bigcup_{k = 1}^{\infty}A_{n, k}$ where $A_{n, k}$ are boxes. By Definition \ref{def:lebesgue measurability}, for each $E_n$, there is an $k$ such that
+    \begin{align*}
+        \sum_{k = 1}^{\infty}A_{n, k} \leq m^*(E_n) + \frac{\varepsilon}{2^k}.
+    \end{align*}
+Then we have $\bigcup_{n = 1}^{\infty}E_n \subset \bigcup_{n = 1}^{\infty}\bigcup_{k = 1}^{\infty}A_{n, k}$ and
+    \begin{align*}
+        m^*\Big(\bigcup_{n = 1}^{\infty}E_n\Big)
+        &\leq \sum_{n = 1}^{\infty}\sum_{k = 1}^{\infty}A_{n, k}\\
+        &\leq \sum_{n = 1}^{\infty}\left(m^*(E_n) + \frac{\varepsilon}{2^k}\right)\\
+        &= \sum_{n = 1}^{\infty}m^*(E_n) + \varepsilon.
+    \end{align*}
+Since $\varepsilon$ is arbitrary, we have
+    \begin{align*}
+        m^*\Big(\bigcup_{n = 1}^{\infty}E_n\Big) \leq \sum_{n = 1}^{\infty}m^*(E_n),
+    \end{align*}
+as desired.\qed
+
+\remark Note that countable subadditivity, when combined with the empty set axiom, gives as a corollary the finite subadditivity property
+    \begin{align*}
+        m^*(E_1 \cup \cdots \cup E_k) \leq m^*(E_1) + \cdots + m^*(E_k)
+    \end{align*}
+for any $k \geq 0$.
+
+
+\newa It is natural to ask whether Lebesgue outer measure has the \emph{finite additivity property}, that is to say that $m^*(E \cup F) = m^*(E) + m^*(F)$ whenever $E, F \subset \mathbf{R}^d$ are disjoint. The answer to this question is somewhat subtle: as we shall see later, we have finite additivity (and even countable additivity) when all sets involved are Lebesgue measurable, but that finite additivity (and hence also countable additivity) can break down in the non-measurable case.
+
+Following lemma says that if disjoint sets $E$ and $F$ have a positive separation from each other, then the Lebesgue outer measure is finitely additive:
+\begin{lemma}[Finite additivity for separated sets]\label{thm:finite additivity for separated sets}
+    Let $E, F \subset \mathbf{R}^d$ be such that $\dist(E, F) > 0$, where
+        \begin{align*}
+            \dist(E, F) := \inf\{|x - y| : x \in E, y \in F\}
+        \end{align*}
+    is the distance\footnote{Recall from the preface that we use the usual Euclidean metric $|(x_1, \cdots, x_d)| := \sqrt{x_1^2 + \cdots + x_d^2}$ on $\mathbf{R}^d$.} between $E$ and $F$. Then $m^*(E \cup F) = m^*(E) + m^*(F)$.
+\end{lemma}
+
+\pff Proof omitted.\qed
+
+
+\newa In general, disjoint sets $E, F$ need not have a positive separation from each other (e.g. $E = [0, 1)$ and $F = [1, 2]$). But the situation improves when $E, F$ are closed, and at least one of $E, F$ is compact:
+
+\begin{lemma}\label{thm:countable additivity for compact set}
+    Let $E, F \subset \mathbf{R}^d$ be disjoint closed sets, with at least one of $E, F$ being compact. Then $\dist(E, F) > 0$.
+\end{lemma}
+
+\pff Let $E$ be compact and $F$ closed. Suppose for sake of contradiction that $\dist(E, F) = 0$. Then there exist sequences $(x_n)_{n = 1}^{\infty}$ in $E$ and $(y_n)_{n = 1}^{\infty}$ in $F$ such that $\lim_{n \to \infty}|x_n - y_n| = 0$. Since $E$ is compact, there is a subsequence $(x_{n_k})_{k = 1}^{\infty}$ of $(x_n)_{n = 1}^{\infty}$ which converges to $x$. Then
+    \begin{align*}
+        \lim_{k \to \infty}|x - y_{n_k}|
+        \leq \lim_{k \to \infty}(|x - x_{n_k}| + |x_{n_k} - y_{n_k}|)
+        = 0.
+    \end{align*}
+This means that $x$ is an adherent point of $F$. Since $F$ is closed, it contains all of its adherent points, thus we have $x \in F$ so that $E \cap F \neq \emptyset$, a contradiction.
+
+For the counterexample, since every singleton is closed in $\mathbf{R}^d$. We can see that $\mathbf{Z}^+$ and $E := \{n + \frac{1}{n} : n \in \mathbf{Z}^+\}$ are closed and disjoint. But $\dist(\mathbf{Z}^+, E) = \inf_{n \in \mathbf{N}}\frac{1}{n} = 0$.\qed
+
+
+\newa From definition we know that countable sets have Lebesgue outer measure zero. Now we start computing the outer measure of some other sets. We begin with \emph{elementary sets}:
+
+\begin{lemma}[Outer measure of elementary sets]\label{thm:outer measure of elementary sets}
+    Let $E$ be an elementary set. Then the Lebesgue outer measure $m^*(E)$ of $E$ is equal to the elementary measure $m(E)$ of $E$, i.e., $m^*(E) = m(E)$.
+\end{lemma}
+
+\pff Proof omitted.\qed
+
+\begin{remark}
+    The above lemma allows us to compute the Lebesgue outer measure of a finite union of boxes. From this and monotonicity we conclude that the Lebesgue outer measure of any set is bounded below by its Jordan inner measure. As it is also bounded above by the Jordan outer measure, we have
+        \begin{align}
+            \JIM(E) \leq m^*(E) \leq \JOM(E)
+        \end{align}
+    for every $E \subset \mathbf{R}^d$.
+\end{remark}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
