@@ -1358,6 +1358,165 @@ For the counterexample, since every singleton is closed in $\mathbf{R}^d$. We ca
 \end{remark}
 
 
+\newa Now we turn to \emph{countable unions of boxes}. First we define almost disjoint:
+
+\begin{definition}[Almost disjoint]\label{def:almost disjoint}
+    We say that two boxes are \emph{almost disjoint} if their interiors are disjoint.
+\end{definition}
+
+With Lemma \ref{thm:outer measure of elementary sets} has the following consequence:
+\begin{lemma}[Outer measure of countable unions of almost disjoint boxes]\label{thm:outer measure of countable unions of almost disjoint boxes}
+    Let $E = \bigcup_{n = 1}^{\infty}B_n$ be a countable union of almost disjoint boxes $B_1, B_2, \cdots$. Then
+        \begin{align*}
+            m^*(E) = \sum_{n = 1}^{\infty}|B_n|.
+        \end{align*}
+    
+    Thus, for instance, $\mathbf{R}^d$ itself has an infinite outer measure.
+\end{lemma}
+
+\pff Proof omitted.\qed
+
+\begin{lemma}
+    If a set $E \subset \mathbf{R}^d$ is expressible as the countable union of almost disjoint boxes, then the Lebesgue outer measure of $E$ is equal to the Jordan inner measure: $m^*(E) = \JIM(E)$, where
+        \begin{align*}
+            \JIM(E) := \sup_{\bigcup_{n = 1}^{k}B_n \subset E; B_n \text{boxes}} \sum_{n = 1}^{k}|B_n|,
+        \end{align*}
+    and $\JIM(E) = +\infty$ when $E$ is unbounded.
+\end{lemma}
+
+\pff Let $E = \bigcup_{n = 1}^{\infty}B_n$ be a countable union of almost disjoint boxes $B_1, B_2, \cdots$. Then for all $k \in \mathbf{N}$ we have $E \supset \bigcup_{n = 1}^{k} B_n$. From Lemma \ref{thm:outer measure of countable unions of almost disjoint boxes} we have
+    \begin{align}
+        m^*(E) = \sum_{n = 1}^{\infty}|B_n| \geq \sum_{n = 1}^{k}|B_n|.
+    \end{align}
+Since the inequality is hold for all $k \in \mathbf{N}$, taking the supremum, we have $m^*(E) \geq \JIM(E)$.
+
+For the other hand, we want to show that $m^*(E) \leq \JIM(E)$. Since
+    \begin{align*}
+        \sum_{n = 1}^{k}|B_n| \leq \JIM(E)
+    \end{align*}
+for all $k$. Letting $k \to \infty$, we have $m^*(E) = \JIM(E)$, as desired.\qed
+
+\begin{lemma}\label{thm:open set can be expressed as countable union of almost disjoint boxes}
+    Let $E \subset \mathbf{R}^d$ be an open set. Then $E$ can be expressed as the countable union of almost disjoint boxes (and, in fact, as the countable union of almost disjoint closed cubes).
+\end{lemma}
+
+\pff Proof omitted.\qed
+
+\begin{lemma}[Outer regularity]\label{thm:outer regularity}
+    Let $E \subset \mathbf{R}^d$ be an arbitrary set. Then one has
+        \begin{align}
+            m^*(E) = \inf_{E \subset U; U \text{ open}}m^*(U).
+        \end{align}
+\end{lemma}
+
+\pff Proof omitted.\qed
+
+
+
+\subsection{Lebesgue measurability}
+
+We now define the notion of a Lebesgue measurable set as one which can be efficiently contained in open sets in the sense of Definition \ref{def:lebesgue measurability}, and set out their basic properties.
+
+First, we show that there are plenty of Lebesgue measurable sets.
+
+\begin{lemma}[Existence of Lebesgue measurable sets]\label{thm:existence of lebesgue measurable sets}
+    \qquad
+    \begin{enumerate}
+        \item Every open set is Lebesgue measurable.
+        \item Every closed set is Lebesgue measurable.
+        \item Every set of Lebesgue outer measure zero is measurable. (Such sets are called \emph{null sets}.)
+        \item The empty set $\emptyset$ is Lebesgue measurable.
+        \item If $E \subset \mathbf{R}^d$ is Lebesgue measurable, then so is its complement $\mathbf{R}^d \setminus E$.
+        \item If $E_1, E_2, \cdots \subset \mathbf{R}^d$ are a sequence of Lebesgue measurable sets, then the union $\bigcup_{n = 1}^{\infty}E_n$ is Lebesgue measurable.
+        \item If $E_1, E_2, \cdots \subset \mathbf{R}^d$ are a sequence of Lebesgue measurable sets, then the intersection $\bigcap_{n = 1}^{\infty}E_n$ is Lebesgue measurable.
+    \end{enumerate}
+\end{lemma}
+
+\begin{comment}
+\begin{remark}
+    The properties (iv), (v) and $(vi)$ of Lemma \ref{thm:existence of lebesgue measurable sets} assert that the collection of Lebesgue measurable subsets of $\mathbf{R}^d$ form a \emph{$\sigma$-algebra}.For the property (ii), notice that every closed set $F$ can be represented as the union of compact sets, i.e., $F = \bigcup_{n = 1}^{\infty} F \cap \overline{B(0, n)}$, where $\overline{B(0, n)}$ are closed balls with radius $n$ and centered at origin. Lemma \ref{thm:countable additivity for compact set} shows that compact set satisfying the countable additivity property.
+\end{remark}
+\end{comment}
+
+\begin{theorem}[Criteria for measruability]\label{thm:criteria for measruability}
+    Let $E \subset \mathbf{R}^d$. The following are equivalent:
+    \begin{enumerate}
+        \item $E$ is Lebesgue measurable.
+        \item (Outer approximation by open) For every $\varepsilon > 0$, there exists an open set $U \supset E$ with $m^*(U \setminus E) \leq \varepsilon$
+        \item (Almost open) For every $\varepsilon > 0$, there exists an open $U$ such that $m^*(U \triangle E) \leq \varepsilon$. (In other words, $E$ differs from an open set by a set of outer measure at most $\varepsilon$.)
+        \item (Inner approximation by closed) For every $\varepsilon > 0$, there exists a closed set $F \subset E$ with $m^*(E \setminus F) \leq \varepsilon$.
+        \item (Almost closed) For every $\varepsilon > 0$, there exists a closed set $F$ such that $m^*(F \triangle E) \leq \varepsilon$. (In other words, $E$ differs from a closed set by a set of outer measure at most $\varepsilon$.)
+        \item (Almost measurable) For every $\varepsilon > 0$, there exists a Lebesgue measurable set $E_\varepsilon$ such that $m^*(E_\varepsilon \triangle E) \leq \varepsilon$. (In other words, $E$ differs from a measurable set by a set of outer measure at most $\varepsilon$.)
+    \end{enumerate}
+\end{theorem}
+
+\pff By Definition \ref{def:lebesgue measurability}, (i) and (ii) are equivalent.
+
+(ii) $\Rightarrow$ (iii). For every $\varepsilon > 0$, there exists an open set $U \supset E$ with $m^*(U \setminus E) \leq \varepsilon$. Then
+    \begin{align*}
+        m^*(U \triangle E)
+        = m^*((U \setminus E) \cup (E \setminus U))
+        = m^*(U \setminus E)
+        \leq \varepsilon.
+    \end{align*}
+\begin{comment}
+(iii) $\Rightarrow$ (ii). For every $\varepsilon > 0$, let $V \supset U \triangle E$ be open set, then from $m^*(U \triangle E) \leq \varepsilon$, we have
+    \begin{align*}
+        m^*((V \cup U) \setminus E) = m^*(V \setminus E \cup U \setminus E)
+    \end{align*}
+\end{comment}
+
+(iii) $\Rightarrow$ (vi). By Lemma \ref{thm:existence of lebesgue measurable sets}(i), $U$ is Lebesgue measurable set, then let $E_\varepsilon := U$ we have $m^*(E_\varepsilon \triangle E) \leq \varepsilon$.
+
+\begin{comment}
+(vi) $\Rightarrow$ (iii). For every $\varepsilon > 0$, there exists a Lebesgue measurable set $E_\varepsilon$ such that $m^*(E_\varepsilon \triangle E) \leq \varepsilon$. By Definition \ref{def:lebesgue measurability}, there exists an open set $U \supset E_\varepsilon$ such that $m^*(U \setminus E_\varepsilon) \leq \varepsilon$. Then
+    \begin{align*}
+        m^*(U \triangle E)
+        \leq m^*((E_\varepsilon \triangle E) \cup (U \triangle E_\varepsilon)) \leq 2\varepsilon
+    \end{align*}
+for that $U \triangle E \subset (E_\varepsilon \triangle E) \cup (U \triangle E_\varepsilon)$.
+\end{comment}
+
+(vi) $\Rightarrow$ (i). For every $n \in \mathbf{Z}^+$ and every $\varepsilon > 0$, there exists a Lebesgue measurable set $E_{\varepsilon/2^n}$ such that $m^*(E_{\varepsilon/2^n} \triangle E) \leq \varepsilon/2^n$. Let $F := \bigcup_{n = 1}^{\infty}E_{\varepsilon/2^n}$. We have
+    \begin{align*}
+        m^*(E \setminus F) = m^*\Big(E \setminus \bigcup_{n = 1}^{\infty}E_{\varepsilon/2^n}\Big)
+        \leq m^*(E \setminus E_{\varepsilon/2^n})
+        \leq m^*(E_{\varepsilon/2^n} \triangle E)
+        \leq \varepsilon/2^n,
+    \end{align*}
+since $\varepsilon$ is arbitrary and the inequality is hold for all $n \geq 1$, we have $m^*(E \setminus F) = 0$. For the other hand, we have
+    \begin{align*}
+        m^*(F \setminus E)
+        &= m^*\Big(\bigcup_{n = 1}^{\infty}E_{\varepsilon/2^n} \setminus E\Big)\\
+        &= m^*\Big(\bigcup_{n = 1}^{\infty}(E_{\varepsilon/2^n} \setminus E)\Big)\\
+        &\leq m^*\Big(\bigcup_{n = 1}^{\infty}(E_{\varepsilon/2^n} \triangle E)\Big)\\
+        &\leq \sum_{n = 1}^{\infty}m^*(E_{\varepsilon/2^n} \triangle E)\\
+        &= \varepsilon
+    \end{align*}
+for arbitrary $\varepsilon$, thus $m^*(F \setminus E) = 0$. Hence, by Lemma \ref{thm:existence of lebesgue measurable sets}(iii), $E \setminus F$ and $F \setminus E$ are Lebesgue measurable.
+
+Now we want to show that there exists an open set $U \supset E$ with $m^*(U \setminus E) \leq \varepsilon$. Because $F \cup E = F \cup (E \setminus F)$, by Lemma \ref{thm:existence of lebesgue measurable sets}(vi), $F \cup E$ is Lebesgue measurable. Thus for every $\varepsilon > 0$ there exists an open set $U \supset F \cup E$ with $m^*(U \setminus (F \cup E)) \leq \varepsilon$. Obviously, we have $U \supset E$. Then
+    \begin{align*}
+        m^*(U \setminus E)
+        &= m^*((U \setminus (F \cup E)) \cup (F \setminus E))\\
+        &\leq m^*(U \setminus (F \cup E)) + m^*(F \setminus E)\\
+        &= 2\varepsilon.
+    \end{align*}
+Thus $E$ is Lebesgue measurable.
+
+(iv) $\Rightarrow$ (v). For every $\varepsilon > 0$, there exists a closed set $F \subset E$ with $m^*(E \setminus F) \leq \varepsilon$. Then
+    \begin{align*}
+        m^*(F \triangle E) \leq m^*(E \setminus F) \leq \varepsilon.
+    \end{align*}
+
+(v) $\Rightarrow$ (vi). By Lemma \ref{thm:existence of lebesgue measurable sets}(ii), $F$ is Lebesgue measurable. Then we have $m^*(E_\varepsilon \triangle E) \leq \varepsilon$ for $E_\varepsilon := F$.
+
+(i) $\Rightarrow$ (iv). By Lemma \ref{thm:existence of lebesgue measurable sets}(v), $E$ is Lebesgue measurable implies that $\mathbf{R}^d \setminus E$ is also Lebesgue measurable. Then there exists an open set $U \supset \mathbf{R}^d \setminus E$ with
+    \begin{align*}
+        m^*(U \setminus (\mathbf{R}^d \setminus E))
+        = m^*(E \setminus (\mathbf{R}^d \setminus U)),
+    \end{align*}
+where $\mathbf{R}^d \setminus U$ is closed and $\mathbf{R}^d \setminus U \subset E$. This complete the proof.\qed
 
 
 
