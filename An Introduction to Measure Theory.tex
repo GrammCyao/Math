@@ -1519,6 +1519,146 @@ Thus $E$ is Lebesgue measurable.
 where $\mathbf{R}^d \setminus U$ is closed and $\mathbf{R}^d \setminus U \subset E$. This complete the proof.\qed
 
 
+\begin{proposition}
+    Every Jordan measurable set is Lebesgue measurable.
+\end{proposition}
+
+\pff By Definition \ref{def:lebesgue measurability}, elementary set is Lebesgue measurable. By Proposition \ref{thm:Characterisation of Jordan measurability}(iii), for every Jordan measurable set $E$, there is an elementary set $A$ such that $\JOM(A \triangle E) \leq \varepsilon$. Then by Definition \ref{def:lebesgue measurability}, there exists an elementary set (which is Lebesgue measurable) such that
+    \begin{align*}
+        m^*(A \triangle E) \leq \JOM(A \triangle E) \leq \varepsilon.
+    \end{align*}
+Here, we use the inequality that $m^*(F) \leq \JOM(F)$ for every $F \subset \mathbf{R}^d$. Thus by Theorem \ref{thm:criteria for measruability}(vi), $E$ is Lebesgue measurable.\qed
+
+\newa Every countable set has outer measure $0$. A reasonable question arises about whether the converse holds. In other words, is every set with outer measure $0$ countable? unfortunately, this is not always true, the \emph{Cantor set} gives a counterexample:
+
+\begin{example}[Middle thirds Cantor set]
+    Let $I_0 := [0, 1]$ be the unit interval, let $I_1 := [0, 1/3] \cup [2/3, 1]$ be $I_0$ with the interior of the middle third interval removed, let $I_2 := [0, 1/9] \cup [2/9, 1/3] \cup [2/3, 7/9] \cup [8/9, 1]$ be $I_1$ with the interior of the middle third of each of the two intervals of $I_1$ removed, and so forth. More formally, write
+        \begin{align*}
+            I_n := \bigcup_{a_1, \cdots, a_n \in \{0, 2\}}\left[\sum_{i = 1}^{n}\frac{a_i}{3^i}, \sum_{i = 1}^{n}\frac{a_i}{3^i} + \frac{1}{3^n}\right].
+        \end{align*}
+    Let $C := \bigcap_{n = 1}^{\infty} I_n$ be the intersection of all the elementary sets $I_n$. Then $C$ is compact, uncountable, and a null set.
+\end{example}
+
+\pff We first show that $C$ is compact. Since every $I_n$ is the union of finitely many closed intervals, $I_n$ is closed for all $n \in \mathbf{N}$. Thus $C$ is closed. For every $a_1, \cdots, a_n \in \{0, 2\}$, we have
+    \begin{align*}
+        0
+        \leq \sum_{i = 1}^{n}\frac{a_i}{3^i}
+        \leq \sum_{i = 1}^{n}\frac{a_i}{3^i} + \frac{1}{3^n}
+        \leq 1.
+    \end{align*}
+So that $I_n \subset [0, 1]$, and $C$ is also bounded by $[0, 1]$. Because $C$ is closed and bounded, it is compact.
+
+Then we show that $C$ is uncountable. Consider the function $\Lambda : \{0, 2\}^{\mathbf{N}} \to [0, 1]$ where $(a_i)_{i = 1}^{\infty} \in \{0, 2\}^{\mathbf{N}}$ (recall that $a_n : \mathbf{N} \to \{0, 2\}$) defined as
+    \begin{align*}
+        \Lambda((a_i)_{i = 1}^{\infty}) := \sum_{i = 1}^{\infty}\frac{a_i}{3^i}.
+    \end{align*}
+Because the series is convergent, function $\Lambda$ is well-defined. We can see that for every $n \in \mathbf{N}$ we have $\sum_{i = 1}^{n}\frac{a_i}{3^i} \in I_n$. Then
+    \begin{align*}
+        \Lambda((a_i)_{i = 1}^{\infty}) = \lim_{n \to \infty} \sum_{i = 1}^{n}\frac{a_i}{3^i} \in \bigcap_{n = 1}^{\infty}I_n = C.
+    \end{align*}
+
+We want to show that $\Lambda$ is injective. Suppose for sake of contradiction that there exists two different sequences $(a_i)_{i = 1}^{\infty}, (b_i)_{i = 1}^{\infty} \in \{0, 2\}^{\mathbf{N}}$ such that $\Lambda((a_i)_{i = 1}^{\infty}) = \Lambda((b_i)_{i = 1}^{\infty})$. Suppose that these two sequences are different from the $k$th term, i.e., $a_k \neq b_k$. Let $a_k > b_k$. Then from
+    \begin{align*}
+        \sum_{i = 1}^{\infty}\frac{a_i}{3^i} - \sum_{i = 1}^{\infty}\frac{b_i}{3^i}
+        = \frac{2}{3^k} + \sum_{i = k + 1}^{\infty}\frac{a_i - b_i}{3^i}
+        = 0,
+    \end{align*}
+we have
+    \begin{align*}
+        \frac{2}{3^k}
+        = \sum_{i = k + 1}^{\infty}\frac{b_i - a_i}{3^i}
+        \leq \sum_{i = k + 1}^{\infty}\frac{2}{3^i}
+    \end{align*}
+This implies that
+    \begin{align*}
+        1 \leq \sum_{i = 1}^{\infty}\frac{1}{3^i} = \frac{1}{2},
+    \end{align*}
+a contradiction, $\Lambda$ is injective. Since $\{0, 2\}^{\mathbf{N}}$ is uncountable, $\Lambda(\{0, 2\}^{\mathbf{N}}) \subset C$ is also uncountable. Thus $C$ is uncountable.
+
+Now we show that $C$ is a null set. Since $C \subset I_n$ for all $n \in \mathbf{N}$, we have $m(C) \leq m(I_n)$. We can see that $I_n$ is the union of disjoint closed intervals, we have $m(I_n) = \frac{n}{3^n}$. As $n \to \infty$, we have $m(C) \leq m(I_n) = 0$. Thus $C$ is a null set.\qed
+
+\begin{example}
+    The half-open interval $[0, 1)$ cannot be expressed as the countable union of disjoint closed \emph{intervals}. In general, $[0, 1)$ cannot be expressed as the countable union of disjoint closed \emph{sets}.
+\end{example}
+
+\begin{comment}
+\pff We can see that $[0, 1)$ cannot be expressed as the finite union of disjoint closed intervals for that which is still closed interval.
+
+Now we consider the countable family of disjoint closed intervals $I_n = [a_n, b_n]$. Suppose for sake of contradiction that $[0, 1) = \bigcup_{n = 1}^{\infty}[a_n, b_n]$. Consider the set
+    \begin{align*}
+        E := \bigcup_{n = 1}^{\infty}\{a_n, b_n\}
+    \end{align*}
+consisting of the endpoints of intervals $I_n$. Clearly, $E$ is countable, and we have
+    \begin{align*}
+        E = [0, 1) \setminus \bigcup_{n = 1}^{\infty}(a_n, b_n).
+    \end{align*}
+\end{comment}
+
+\newa Now we look at the Lebesgue measure $m(E)$ of a Lebesgue measurable set $E$, which is defined to equal its Lebesgue outer measure $m^*(E)$. If $E$ is Jordan measurable, we see from (1.2) that the Lebesgue measure and the Jordan measure of $E$ coincide, thus Lebesgue measure extends Jordan measure. This justifies the use of the notation $m(E)$ to denote both Lebesgue measure of a Lebesgue measurable set, and Jordan measure of a Jordan measurable set (as well as elementary measure of an elementary set).
+
+Lebesgue measure obeys significantly better properties than Lebesgue outer measure, when restricted to lebesgue measurable sets:
+
+\begin{lemma}[The measure axioms]\label{thm:the measure axioms}
+    \quad
+    \begin{enumerate}
+        \item (Empty set) $m(\emptyset) = 0$.
+        \item (Countable additivity) If $E_1, E_2, \cdots \subset \mathbf{R}^d$ is a countable sequence of disjoint Lebesgue measurable sets, then
+            \begin{align*}
+                m\Big(\bigcup_{n = 1}^{\infty}E_n\Big) = \sum_{n = 1}^{\infty}m(E_n).
+            \end{align*}
+    \end{enumerate}
+\end{lemma}
+
+\pff Proof omitted.\qed
+
+\begin{theorem}[Monotone convergence thm for measurable sets]\label{thm:monotone convergence theorem for measurable sets}
+    \quad
+    \begin{enumerate}
+        \item (Upward monotone convergence) Let $E_1 \subset E_2 \subset \cdots \subset \mathbf{R}^n$ be a countable non-decreasing sequence of Lebesgue measurable sets. Then we have $m(\bigcup_{n = 1}^{\infty}E_n) = \lim_{n \to \infty}m(E_n)$.
+        \item (Downward monotone convergence) Let $\mathbf{R}^d \supset E_1 \supset E_2 \supset \cdots$ be a countable non-increasing sequence of Lebesgue measurable sets. If at least one of the $m(E_n)$ is finite, then we have $m(\bigcap_{n = 1}^{\infty}E_n) = \lim_{n \to \infty}m(E_n)$.
+    \end{enumerate}
+\end{theorem}
+
+\pff (i) Let $A_1 := E_1$ and let $A_n := E_n \setminus E_{n - 1}$. Then for every $n \geq 1$, $A_n$ are disjoint. Since $E_n = \bigcup_{i = 1}^{n}A_i$ and $\bigcup_{n = 1}^{\infty}E_n = \bigcup_{n = 1}^{\infty}A_n$, by Lemma \ref{thm:the measure axioms}(ii),
+    \begin{align*}
+        m\Big(\bigcup_{n = 1}^{\infty}E_n\Big)
+        &= m\Big(\bigcup_{n = 1}^{\infty}A_n\Big)\\
+        &= \sum_{n = 1}^{\infty}m(A_n)\\
+        &= \lim_{n \to \infty}\sum_{i = 1}^{n}m(A_i)\\
+        &= \lim_{n \to \infty}m\Big(\bigcup_{i = 1}^{n}A_i\Big)\\
+        &= \lim_{n \to \infty}m(E_n).
+    \end{align*}
+
+(ii) Let $A_1 := \emptyset$ and $A_n = E_1 \setminus A_n$. Then we have $A_n \subset A_{n + 1}$ for all $n \geq 1$. From above conclusion, we have
+    \begin{align*}
+        m\Big(\bigcup_{n = 1}^{\infty}A_n\Big)
+        = m\Big(\bigcup_{n = 1}^{\infty}(E_1 \setminus E_n)\Big)
+        = \lim_{n \to \infty}m(A_n)
+        = \lim_{n \to \infty}m(E_1 \setminus E_n).
+    \end{align*}
+Since $\bigcup_{n = 1}^{\infty}(E_1 \setminus E_n) = E_1 \setminus \bigcap_{n = 1}^{\infty}E_n$, we have
+    \begin{align*}
+        m\Big(\bigcup_{n = 1}^{\infty}(E_1 \setminus E_n)\Big)
+        = m\Big(E_1 \setminus \bigcap_{n = 1}^{\infty}E_n\Big)
+        = \lim_{n \to \infty}m(E_1 \setminus E_n).
+    \end{align*}
+Use additivity of Lebesgue measure, we see that RHS of the second equality above can be written as
+    \begin{align*}
+        \lim_{n \to \infty}m(E_1 \setminus E_n)
+        = \lim_{n \to \infty}(m(E_1) - m(E_n))
+        = m(E_1) - \lim_{n \to \infty}m(E_n),
+    \end{align*}
+and LHS of the second equality can be written as
+    \begin{align*}
+        m\Big(E_1 \setminus \bigcap_{n = 1}^{\infty}E_n\Big)
+        = m(E_1) - m\Big(\bigcap_{n = 1}^{\infty}E_n\Big).
+    \end{align*}
+Thus we have
+    \begin{align*}
+        m(E_1) - \lim_{n \to \infty}m(E_n)
+        = m(E_1) - m\Big(\bigcap_{n = 1}^{\infty}E_n\Big).
+    \end{align*}
+This means that $m(\bigcap_{n = 1}^{\infty}E_n) = \lim_{n \to \infty}m(E_n)$, as desired.\qed
 
 
 
