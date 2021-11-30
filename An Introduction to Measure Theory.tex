@@ -1661,6 +1661,53 @@ Thus we have
 This means that $m(\bigcap_{n = 1}^{\infty}E_n) = \lim_{n \to \infty}m(E_n)$, as desired.\qed
 
 
+\begin{corollary}\label{thm:monotonicity and countable subadditivity axiom of Lebesgue measure}
+    Any map $E \mapsto m(E)$ from Lebesgue measurable sets to elements of $[0, +\infty]$ that obeys the above empty set and countable additivity axioms will also obey the monotonicity and countable subadditivity axioms from Lemma \ref{thm:the outer measure axioms}, when restricted to Lebesgue measurable sets of course.
+\end{corollary}
+
+\pff Let $\mu$ be arbitrary map from Lebesgue measurable sets to $[0, +\infty]$ obeys the Lemma \ref{thm:the measure axioms}. Monotonicity and countable subadditivity are trivial when there is unbounded set. We assume that all of sets are bounded, so that with finite measure.
+
+For Lebesgue measurable sets $E, F$ where $E \subset F$, we have $E$ and $F \setminus E$ are two disjoint Lebesgue measurable sets. From finite additivity (which is the implication of countable additivity), we have
+    \begin{align*}
+        \mu(F)
+        = \mu(E \cup (F \setminus E))
+        = \mu(E) + \mu(F \setminus E)
+        \geq \mu(E).
+    \end{align*}
+
+For the countable subadditivity, let $E_1, E_2, \cdots$ be the sequence of Lebesgue measurable sets. Let $E := \bigcup_{n = 1}^{\infty}E_n$. For every $E_n$ we can find a subset $F_n \subset E_n$ which is defined as $F_n := E_n \setminus \bigcup_{i = 1}^{n - 1}E_i$. Then $(F_n)_{n = 1}^{\infty}$ consisting a disjoint sequence and we have
+    \begin{align*}
+        \bigcup_{n = 1}^{\infty}F_n
+        = \bigcup_{n = 1}^{\infty}\Big(E_n \setminus \bigcup_{i = 1}^{n - 1}E_i\Big)
+        = \bigcup_{n = 1}^{\infty}E_n,
+    \end{align*}
+this holds for that $\bigcup_{i = 1}^{0} E_i = \emptyset$.
+
+Now consider the sequence $(E \cap E_n)_{n = 1}^{\infty}$, we have
+    \begin{align*}
+        \mu(E)
+        &= \mu\Big(\bigcup_{n = 1}^{\infty}E \cap E_n\Big)\\
+        &\leq \mu\Big(\bigcup_{n = 1}^{\infty}E_n\Big)\\
+        &= \mu\Big(\bigcup_{n = 1}^{\infty}F_n\Big)\\
+        &= \sum_{n = 1}^{\infty}\mu(F_n)\\
+        &= \sum_{n = 1}^{\infty}\mu\Big(E_n \setminus \bigcup_{i = 1}^{n - 1}E_i\Big)\\
+        &\leq \sum_{n = 1}^{\infty}\mu(E_n),
+    \end{align*}
+where the second line holds from the monotonicity; the fourth and fifth lines hold from the countable additivity.\qed
+
+\begin{comment}
+For the countable subadditivity, let $E_1, E_2, \cdots$ be the sequence of Lebesgue measurable sets. (This is similar to prove as Lemma \ref{thm:the outer measure axioms}(iii).) By outer regularity, we can find a sequence $(U_n)_{n = 1}^{\infty}$ of open sets such that $E_n \subset U_n$ and $m(E_n) + \varepsilon/2^n \geq m(U_n)$. Since each open set $U_n$ can be represented as the countable union of almost disjoint boxes $B_{n, k}$. Then we have
+    \begin{align*}
+        m\Big(\bigcup_{n = 1}^{\infty}E_n\Big)
+        &\leq m\Big(\bigcup_{n = 1}^{\infty}U_n\Big)\\
+        &= m\Big(\bigcup_{n = 1}^{\infty}\bigcup_{k = 1}^{\infty}B_{n, k}\Big)\\
+        &\leq \sum_{n = 1}^{\infty}\sum_{k = 1}^{\infty}|B_{n, k}|\\
+        &= \sum_{n = 1}^{\infty}m(U_n)\\
+        &\leq \sum_{n = 1}^{\infty}\Big(m(E_n) + \frac{\varepsilon}{2^n}\Big)\\
+        &= \sum_{n = 1}^{\infty}m(E_n) + \varepsilon,
+    \end{align*}
+where the first line above holds for the monotonicity of Lebesgue measure and $\bigcup_{n = 1}^{\infty}E_n \subset \bigcup_{n = 1}^{\infty}U_n$; third line holds for the countable subadditivity of outer measure and Lemma \ref{thm:outer measure of elementary sets}; fourth line holds for the countable additivity of Lebesgue measure. As $\varepsilon$ was arbitrary, we have $m(\bigcup_{n = 1}^{\infty}E_n) \leq \sum_{n = 1}^{\infty}m(E_n)$.\qed
+\end{comment}
 
 
 
